@@ -1,0 +1,45 @@
+// @Author: alcwynparker
+// @Date:   2017-06-18T15:33:02+01:00
+// @Last modified by:   alcwynparker
+// @Last modified time: 2018-03-12T23:12:43+00:00
+/*!
+
+ =========================================================
+ * core Dashboard - v1.1.2
+ =========================================================
+
+ * Product Page: http://www.creative-tim.com/product/core-dashboard
+ * Copyright 2017 Creative Tim (http://www.creative-tim.com)
+ * Licensed under MIT (https://github.com/creativetimofficial/core-dashboard/blob/master/LICENSE.md)
+
+ =========================================================
+
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+ */
+@import "core/variables";
+@import "core/mixins";
+@import "core/typography";
+// Core CSS
+//
+
+// Style for the main views
+@import "core/top-nav";
+@import "core/sphere";
+@import "core/tutorials";
+@import "core/visual-editor";
+
+@import "core/misc";
+@import "core/sidebar-and-main-panel";
+@import "core/buttons";
+@import "core/inputs";
+@import "core/alerts";
+@import "core/tables";
+@import "core/checkbox-radio";
+@import "core/navbars";
+@import "core/footers";
+// Fancy Stuff
+@import "core/dropdown";
+@import "core/cards";
+@import "core/chartist";
+@import "core/responsive";
