@@ -1,16 +1,17 @@
 <template>
   <div id="app">
+
     <Split class="parent-split" :direction="'vertical'">
-      <SplitArea>
-          Visual Editor
+      <SplitArea class="top-panel">
+        <VisualEditor />
       </SplitArea>
-      <SplitArea>
-        <Split style="height: 500px;">
-          <SplitArea :size="25">
+      <SplitArea class="bottom-panel">
+        <Split >
+          <SplitArea :size="60">
               <router-view/>
           </SplitArea>
-          <SplitArea :size="75">
-              Sphere
+          <SplitArea :size="40">
+              <SphereSimulator />
           </SplitArea>
         </Split>
       </SplitArea>
@@ -21,12 +22,16 @@
 </template>
 
 <script>
+import VisualEditor from './components/VisualEditor'
+import SphereSimulator from './components/SphereSimulator'
+
 export default {
   name: 'App',
   mounted: function () {
     var parentPanel = document.getElementsByClassName('parent-split')
-    parentPanel[0].style.height = `${window.innerHeight}px`;
-  }
+    parentPanel[0].style.height = `${window.innerHeight}px`
+  },
+  components: {VisualEditor, SphereSimulator}
 }
 </script>
 
@@ -37,17 +42,21 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  width:100%;
+  height:100%;
+  overflow: hidden;
 }
 html, body {
     height: 100%;
+    padding: 0px;
+    margin:0px;
   }
 body {
-  padding: 8px;
   background-color: #F6F6F6;
   box-sizing: border-box;
 }
-
-
+.bottom-panel{
+  overflow:scroll;
+}
 
 </style>
