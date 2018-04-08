@@ -12,8 +12,8 @@ export default {
   mounted: function () {
     var numSocket = new D3NE.Socket("number", "Number value", "hint");
 
-var componentNum = new D3NE.Component("Number", {
- builder(node) {
+    var componentNum = new D3NE.Component("Number", {
+    builder(node) {
     var out1 = new D3NE.Output("Number", numSocket);
     var numControl = new D3NE.Control('<input type="number">',
        (el, c) => {
