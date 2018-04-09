@@ -5,116 +5,58 @@
 </template>
 
 <script>
-
+import NodeBuilder from '@/Models/NodeBuilder'
 
 export default {
   name: 'VisualEditor',
   mounted: function () {
-    var numSocket = new D3NE.Socket("number", "Number value", "hint");
+    let self = this
 
-    var componentNum = new D3NE.Component("Number", {
-    builder(node) {
-    var out1 = new D3NE.Output("Number", numSocket);
-    var numControl = new D3NE.Control('<input type="number">',
-       (el, c) => {
-          el.value = c.getData('num') || 1;
+    this.container = document.getElementById("nodeEditor");
+    this.editor = new D3NE.NodeEditor("demo@0.1.0", this.container, this.nodeBuilder.componentList(), this.nodeBuilder.menu());
 
-          function upd() {
-             c.putData("num", parseFloat(el.value));
-          }
+    //var nn = componentNum.newNode();
+    //nn.data.num = 2;
+    var n1 = this.nodeBuilder.number.builder(this.nodeBuilder.number.newNode());
+    var n2 = this.nodeBuilder.number.builder(this.nodeBuilder.number.newNode());
+    var add = this.nodeBuilder.add.builder(this.nodeBuilder.add.newNode());
+    var num = this.nodeBuilder.number.builder(this.nodeBuilder.number.newNode());
 
-          el.addEventListener("input", ()=>{
-             upd();
-             editor.eventListener.trigger("change");
-          });
-          el.addEventListener("mousedown", function(e){e.stopPropagation()});// prevent node movement when selecting text in the input field
-         upd();
-       }
-    );
+    n1.position = [80, 200];
+    n2.position = [80, 400];
+    add.position = [500, 240];
+    num.position = [600, 300];
 
-    return node.addControl(numControl).addOutput(out1);
- },
- worker(node, inputs, outputs) {
-    outputs[0] = node.data.num;
- }
-});
+    this.editor.connect(n1.outputs[0], add.inputs[0]);
+    this.editor.connect(n2.outputs[0], add.inputs[1]);
 
-var componentAdd = new D3NE.Component("Add", {
- builder(node) {
-    var inp1 = new D3NE.Input("Number", numSocket);
-    var inp2 = new D3NE.Input("Number", numSocket);
-    var out = new D3NE.Output("Number", numSocket);
+    this.editor.addNode(n1);
+    this.editor.addNode(n2);
+    this.editor.addNode(add);
+    this.editor.addNode(num);
 
-    var numControl = new D3NE.Control(
-       '<input readonly type="number">',
-       (el, control) => {
-          control.setValue = val => {
-             el.value = val;
-          };
-       }
-    );
-
-    return node
-       .addInput(inp1)
-       .addInput(inp2)
-       .addControl(numControl)
-       .addOutput(out);
- },
- worker(node, inputs, outputs) {
-    var sum = inputs[0][0] + inputs[1][0];
-    editor.nodes.find(n => n.id == node.id).controls[0].setValue(sum);
-    outputs[0] = sum;
- }
-});
-
-var menu = new D3NE.ContextMenu({
- Values: {
-    Value: componentNum,
-    Action: function() {
-       alert("ok");
-    }
- },
- Add: componentAdd
-});
-
-var container = document.getElementById("nodeEditor");
-var components = [componentNum, componentAdd];
-var editor = new D3NE.NodeEditor("demo@0.1.0", container, components, menu);
-
-var nn = componentNum.newNode();
-nn.data.num = 2;
-var n1 = componentNum.builder(nn);
-var n2 = componentNum.builder(componentNum.newNode());
-var add = componentAdd.builder(componentAdd.newNode());
-
-n1.position = [80, 200];
-n2.position = [80, 400];
-add.position = [500, 240];
-
-editor.connect(n1.outputs[0], add.inputs[0]);
-editor.connect(n2.outputs[0], add.inputs[1]);
-
-editor.addNode(n1);
-editor.addNode(n2);
-editor.addNode(add);
 //  editor.selectNode(tnode);
 
-var engine = new D3NE.Engine("demo@0.1.0", components);
+    this.engine = new D3NE.Engine("demo@0.1.0", this.nodeBuilder.componentList());
 
-editor.eventListener.on("change", async function() {
- await engine.abort();
- await engine.process(editor.toJSON());
-});
+    this.editor.eventListener.on("change", async function() {
+      await self.engine.abort();
+      await self.engine.process(self.editor.toJSON());
+    });
 
-editor.view.zoomAt(editor.nodes);
-editor.eventListener.trigger("change");
-editor.view.resize();
+    this.editor.view.zoomAt(this.editor.nodes);
+    this.editor.eventListener.trigger("change");
+    this.editor.view.resize();
 
 
   },
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      nodeBuilder: new NodeBuilder(),
+      editor: null,
+      container: null,
+      engin: null
     }
   }
 }
