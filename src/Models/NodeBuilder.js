@@ -33,7 +33,7 @@ class NodeBuilder {
            alert("ok");
         }
      },
-     Add: this.Add
+     Add: this.add
     });
   }
 

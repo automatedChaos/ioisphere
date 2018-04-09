@@ -56,7 +56,7 @@ export default {
       nodeBuilder: new NodeBuilder(),
       editor: null,
       container: null,
-      engin: null
+      engine: null
     }
   }
 }
