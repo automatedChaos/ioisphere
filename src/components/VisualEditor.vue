@@ -1,3 +1,10 @@
+<!--
+@Author: alcwynparker
+@Date:   2018-03-13T00:42:25+00:00
+@Last modified by:   alcwynparker
+@Last modified time: 2018-04-23T21:55:34+01:00
+-->
+
 <template>
   <div class="visual-editor">
     <div id="nodeEditor" class="node-editor"></div>
@@ -6,6 +13,7 @@
 
 <script>
 import NodeBuilder from '@/Models/NodeBuilder'
+import EventBus from '@/components/utils/EventBus.js'
 
 export default {
   name: 'VisualEditor',
@@ -35,14 +43,17 @@ export default {
     this.editor.addNode(add);
     this.editor.addNode(num);
 
-//  editor.selectNode(tnode);
+    //  editor.selectNode(tnode);
 
-    this.engine = new D3NE.Engine("demo@0.1.0", this.nodeBuilder.componentList());
+    this.engine = new D3NE.Engine('demo@0.1.0', this.nodeBuilder.componentList());
 
-    this.editor.eventListener.on("change", async function() {
-      await self.engine.abort();
-      await self.engine.process(self.editor.toJSON());
-    });
+    this.editor.eventListener.on('change', (_, persistent) => {
+      // trigger after each of the first six events
+      //console.log(EventBus)
+      //console.log(self.editor.toJSON())
+
+      EventBus.$emit('VisualEditorChange', self.editor.toJSON())
+   });
 
     this.editor.view.zoomAt(this.editor.nodes);
     this.editor.eventListener.trigger("change");

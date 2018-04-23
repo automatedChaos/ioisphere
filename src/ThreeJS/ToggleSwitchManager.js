@@ -5,7 +5,7 @@
 * @Project: Anemone
 * @Filename: ToggleSwitchManager.js
  * @Last modified by:   alcwynparker
- * @Last modified time: 2018-03-13T22:31:13+00:00
+ * @Last modified time: 2018-04-23T13:56:11+01:00
 */
 import * as THREE from 'three'
 import ToggleSwitch from './ToggleSwitch.js'
@@ -14,9 +14,9 @@ class ToggleSwitchManager {
   constructor (parent, camera, rad) {
     'use strict'
     // create a mesh group and add it to the parent scene
-    this._parent      = parent;
-    this._camera      = camera;
-    this._meshGroup   = new THREE.Object3D();
+    this._parent = parent
+    this._camera = camera
+    this._meshGroup = new THREE.Object3D();
     this._parent.add(this._meshGroup);
 
     this._rad  = rad;
@@ -28,7 +28,8 @@ class ToggleSwitchManager {
     this._testData2 = [];
     this._testData3 = [];
 
-    //this.addToggleSwitches()
+
+    this.addToggleSwitches()
 
   }
 
@@ -38,15 +39,15 @@ class ToggleSwitchManager {
   addToggleSwitches () {
 
       // switch and ring details
-      var switchNum = [1, 5, 10, 15, 20, 24, 28, 31, 34, 34];
-      var ringSpacing = 140/12;
-      var rad = this._rad + this._radOffset;
+      var switchNum = [1, 4, 9, 14, 19, 23, 27, 30, 33, 33]
+      var ringSpacing = 140/13
+      var rad = this._rad + this._radOffset
 
       // loop through the rings
       for(var r = 0; r < switchNum.length - 1; r++){
 
         // calculate the distance between switches
-        var switchDist = 360/switchNum[r] ;
+        var switchDist = 360/switchNum[r]
 
           // loop through each switch
           for (var i = 0; i < switchNum[r]; i++){
@@ -68,6 +69,7 @@ class ToggleSwitchManager {
 
 
   addSwitch (polar, alpha, rad) {
+
 
     // POLAR -> CARTESIAN
     var x = rad * Math.sin(polar) * Math.cos(alpha);

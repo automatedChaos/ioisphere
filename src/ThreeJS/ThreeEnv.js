@@ -5,7 +5,7 @@
 * @Project: GiffGaff - SpaceJunk
 * @Filename: scripts.js
  * @Last modified by:   alcwynparker
- * @Last modified time: 2018-03-14T00:19:34+00:00
+ * @Last modified time: 2018-04-23T22:32:05+01:00
 */
 /* eslint-disable */
 import * as THREE from 'three'
@@ -51,32 +51,21 @@ class ThreeEnv {
     this.material
     this.mesh
 
-    this.horGeometry
-    this.horSmooth
-    this.bottomBlock
-    this.topBlock
-    this.verGeometry
-    this.verSmooth
-    this.leftBlock
-    this.rightBlock
-    this.cornerCircleGeometry
-    this.tl
-    this.tr
-    this.bl
-    this.br
-    this.backgroundGeometry
-    this.background;
 
     this.anemone
     this.anemoneRad = 650
     this.mainSphere
     this.mainSphereGeometry
+    this.base
+    this.baseGeometry
     this.switchManager
 
     this.raycaster = new THREE.Raycaster()
     this.mouse = new THREE.Vector2()
     this.sphere =  new THREE.MeshBasicMaterial( {transparent: true,  color: 0xd4d0c3, alpha: 0.1})
     this.sphere.opacity = 0.5
+
+    this.rings = [33,  33,  30,  27,  23, 19, 14, 9,  4]
 
     this.init()
     this.animate()
@@ -89,138 +78,131 @@ class ThreeEnv {
    */
   init (){
 
+    //  get the DOM element
     this.container = document.getElementById('renderer')
-    //this.container.addEventListener( 'click', this.onMouseClick, false );
-    this.containerWidth = this.container.parentElement.offsetWidth;
-    this.containerHeight = this.container.parentElement.offsetHeight;
+    this.containerWidth = this.container.parentElement.offsetWidth
+    this.containerHeight = this.container.parentElement.offsetHeight
 
-    this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color( 0xffffff );
+    // create a basic scene
+    this.scene = new THREE.Scene()
+    this.scene.background = new THREE.Color( 0xAAAAAA )
 
-  	this.camera = new THREE.PerspectiveCamera( 75, this.containerWidth / this.containerHeight, 1, 10000 );
-  	this.camera.position.z = 2000
-    this.camera.position.y = -300
-
+    // LIGHTS
     var light = new THREE.PointLight( 0xff0000, 1, 100 )
-    light.position.set( 0, 50, 600 );
-    this.scene.add( light );
+    light.position.set( 0, 50, 600 )
+    this.scene.add( light )
 
+    // CAMERA
+  	this.camera = new THREE.PerspectiveCamera( 75, this.containerWidth / this.containerHeight, 1, 10000 )
+
+    // ACTION
     this.renderer = new THREE.WebGLRenderer()
   	this.renderer.setSize(this.container.parentElement.offsetWidth, this.container.parentElement.offsetHeight, true  )// window.innerWidth, window.innerHeight );
-    this.renderer.render( this.scene, this.camera );
+    this.renderer.render( this.scene, this.camera )
+    this.container.appendChild( this.renderer.domElement );
 
+    // add the drag controls
     this.controls = new OrbitControls( this.camera, this.renderer.domElement )
-
     // enable animation loop when using damping or autorotation
     //controls.enableDamping = true;
     //controls.dampingFactor = 0.25;
     this.controls.enableZoom = false;
-    this.controls.addEventListener( 'change', this.render );
 
+    // add the objects to the scene
+    this.addGeometry()
+    this.switchManager = new ToggleSwitchManager(this.scene, this.camera, this.anemoneRad)
 
-  	this.container.appendChild( this.renderer.domElement );
-    console.log(this.renderer.domElement)
-
-    this.material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
-    this.backgroundGeometry = new THREE.BoxGeometry(2000, 200, 2000);
-    this.background = new THREE.Mesh( this.backgroundGeometry, GREY );
-    this.background.position.y = -500;
-    this.scene.add(this.background);
-
-    this.mainSphereGeometry = new THREE.SphereGeometry( this.anemoneRad, 32, 32 );
-
-    this.mainSphere = new THREE.Mesh( this.mainSphereGeometry, this.sphere );
-    this.scene.add( this.mainSphere );
-    this.mainSphere.position.x = 0;
-    this.mainSphere.position.z = 0;
-    this.mainSphere.position.y = 0;
-
-    this.cornerCircleGeometry = new THREE.SphereGeometry( 170, 12, 12 );
-
-    this.tl = new THREE.Mesh( this.cornerCircleGeometry, YELLOW );
-    this.scene.add( this.tl );
-    this.tl.position.x = -600;
-    this.tl.position.z = 600;
-    this.tl.position.y =  -450;
-
-    this.tr = new THREE.Mesh( this.cornerCircleGeometry, RED );
-    this.scene.add( this.tr );
-    this.tr.position.x = 600;
-    this.tr.position.z = 600;
-    this.tr.position.y = -450;
-
-    this.bl = new THREE.Mesh( this.cornerCircleGeometry, DARK_BROWN );
-    this.scene.add( this.bl );
-    this.bl.position.x = -600;
-    this.bl.position.z = -600;
-    this.bl.position.y =  -450;
-
-    this.br = new THREE.Mesh( this.cornerCircleGeometry, PINK );
-    this.scene.add( this.br );
-    this.br.position.x = 600;
-    this.br.position.z = -600;
-    this.br.position.y =  -450;
-
-    this.horGeometry = new THREE.BoxGeometry(700, 200, 200,4, 4, 4  );
-    this.verGeometry = new THREE.BoxGeometry(200, 200, 700,4, 4, 4  );
-
-    var modifier = new SubdivisionModifier( 2 );
-
-    this.horSmooth = modifier.modify( this.horGeometry );
-    this.verSmooth = modifier.modify( this.verGeometry );
-
-    this.bottomBlock = new THREE.Mesh( this.horSmooth, ORANGE );
-    this.scene.add( this.bottomBlock );
-
-    this.bottomBlock.position.y = -450;
-    this.bottomBlock.position.z = 700;
-
-    this.topBlock = new THREE.Mesh( this.horSmooth, BLUE );
-    this.scene.add( this.topBlock );
-
-    this.topBlock.position.y = -450;
-    this.topBlock.position.z = -700;
-
-    this.leftBlock = new THREE.Mesh( this.verSmooth, GREEN );
-    this.scene.add( this.leftBlock );
-
-    this.leftBlock.position.y = -450;
-    this.leftBlock.position.x = -700;
-    this.leftBlock.position.z = 0;
-
-    this.rightBlock = new THREE.Mesh( this.verSmooth, PURPLE);
-    this.scene.add( this.rightBlock );
-
-    this.rightBlock.position.y = -450;
-    this.rightBlock.position.x = 700;
-    this.rightBlock.position.z = 0;
-
-
-    this.switchManager = new ToggleSwitchManager(this.scene, this.camera, this.anemoneRad);
+    // add all event listeners
+    this.addOnControlsChange()
+    this.addOnMouseClick()
+    this.addOnWindowResize()
   }
 
 
   /**
-   * onMouseClick - handle the click events. Mainly used for toggling the switches
+   * addGeometry - creates the core geometry
+   *
+   */
+  addGeometry () {
+
+      // add sphere
+      this.mainSphereGeometry = new THREE.SphereGeometry( this.anemoneRad, 32, 32 );
+      this.mainSphere = new THREE.Mesh( this.mainSphereGeometry, this.sphere );
+      this.scene.add( this.mainSphere );
+      this.mainSphere.position.x = 0;
+      this.mainSphere.position.z = 0;
+      this.mainSphere.position.y = 0;
+
+      // add base
+      this.baseGeometry = new THREE.CylinderGeometry( this.anemoneRad+ 50, this.anemoneRad + 50, 650, 200 );
+      this.base = new THREE.Mesh(this.baseGeometry, WHITE);
+      this.scene.add(this.base);
+      this.base.position.x = 0;
+      this.base.position.z = 0;
+      this.base.position.y = -400;
+  }
+
+  /**
+   * addOnControlsChange - waits for the controls to move the sphere and
+   * renders the new position
+   *
+   */
+  addOnControlsChange () {
+
+    let onControlsChange = (event) => {
+      this.render()
+    }
+    this.controls.addEventListener( 'change', onControlsChange )
+  }
+
+  /**
+   * addOnWindowChange - create and add the onWindowResize Listener
+   *
+   */
+  addOnWindowResize () {
+
+    let onWindowResize = (event) => {
+
+      this.camera.aspect = this.containerWidth / this.containerHeight;
+			this.camera.updateProjectionMatrix();
+
+			this.renderer.setSize( this.containerWidth, this.containerHeight );
+    }
+
+    window.addEventListener( 'resize', onWindowResize, false );
+  }
+
+
+  /**
+   * addOnMouseClick - handle the click events. Mainly used for toggling the switches
    *
    * @param  {object} event information about the event
    */
-  onMouseClick( event ){
-    // calculate mouse position in normalized device coordinates
-  	// (-1 to +1) for both components
+  addOnMouseClick () {
 
-  	this.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-  	this.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+    let onMouseClick = (event) => {
 
-    // update the picking ray with the camera and mouse position
-    this.raycaster.setFromCamera( mouse, camera );
+      console.log('asdfasfdsdfs')
+      // calculate mouse position in normalized device coordinates
+      // (-1 to +1) for both components
 
-    // calculate objects intersecting the picking ray
+      this.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+      this.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-    var intersects = raycaster.intersectObjects( switchManager._meshGroup.children );
+      // update the picking ray with the camera and mouse position
+      this.raycaster.setFromCamera( this.mouse, this.camera );
 
-    // only interact with the first intersect
-    if (intersects.length > 0)	intersects[ 0 ].object.material.color.set( 0xff0000 );
+      // calculate objects intersecting the picking ray
+
+      var intersects = this.raycaster.intersectObjects( this.switchManager._meshGroup.children );
+
+      // only interact with the first intersect
+      if (intersects.length > 0)	intersects[ 0 ].object.material.color.set( 0xff0000 );
+
+    }
+
+    this.container.addEventListener( 'click', onMouseClick, false );
+
   }
 
 
@@ -244,7 +226,11 @@ class ThreeEnv {
    */
   render() {
 
-    this.renderer.render( this.scene, this.camera );
+    //console.log(this.renderer)
+    if (this.renderer != null){
+      this.renderer.render( this.scene, this.camera )
+    }
+
   }
 
   checkDims () {
@@ -257,8 +243,14 @@ class ThreeEnv {
       this.renderer.setSize( this.containerWidth, this.containerHeight, true  )
       this.controls = new OrbitControls( this.camera, this.renderer.domElement )
 
-      this.camera.position.z = 2000
-      this.camera.position.y = -300
+      // position the camera
+      this.camera.position.z = 1150
+      this.camera.position.y = 300
+
+      // aim the camerea
+      let point = new THREE.Vector3(0, 200, 0)
+      this.camera.lookAt( point )
+
 
       var light = new THREE.PointLight( 0xff0000, 1, 100 )
     }

@@ -1,3 +1,10 @@
+<!--
+@Author: alcwynparker
+@Date:   2018-03-12T22:22:05+00:00
+@Last modified by:   alcwynparker
+@Last modified time: 2018-04-23T22:05:39+01:00
+-->
+
 <template>
   <div id="app">
 
@@ -7,10 +14,10 @@
       </SplitArea>
       <SplitArea class="bottom-panel">
         <Split >
-          <SplitArea :size="60">
+          <SplitArea :size="70">
               <router-view/>
           </SplitArea>
-          <SplitArea :size="40">
+          <SplitArea :size="30">
               <SphereSimulator />
           </SplitArea>
         </Split>

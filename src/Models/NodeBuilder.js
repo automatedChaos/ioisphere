@@ -2,7 +2,7 @@
  * @Author: alcwynparker
  * @Date:   2018-02-21T21:15:17+00:00
  * @Last modified by:   alcwynparker
- * @Last modified time: 2018-03-27T01:33:27+01:00
+ * @Last modified time: 2018-04-22T21:38:59+01:00
  */
 //import axios from 'axios'
 //axios.defaults.withCredentials = true
@@ -30,7 +30,7 @@ class NodeBuilder {
      Values: {
         Value: this.number,
         Action: function() {
-           alert("ok");
+           alert("ok")
         }
      },
      Add: this.add
@@ -130,7 +130,7 @@ class NodeBuilder {
         },
         worker(node, inputs, outputs) {
           var sum = inputs[0][0] + inputs[1][0];
-          editor.nodes.find(n => n.id == node.id).controls[0].setValue(sum);
+          //editor.nodes.find(n => n.id == node.id).controls[0].setValue(sum);
           outputs[0] = sum;
         }
       });
