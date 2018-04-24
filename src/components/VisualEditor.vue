@@ -2,7 +2,7 @@
 @Author: alcwynparker
 @Date:   2018-03-13T00:42:25+00:00
 @Last modified by:   alcwynparker
-@Last modified time: 2018-04-23T21:55:34+01:00
+@Last modified time: 2018-04-23T22:54:32+01:00
 -->
 
 <template>
@@ -20,45 +20,44 @@ export default {
   mounted: function () {
     let self = this
 
-    this.container = document.getElementById("nodeEditor");
-    this.editor = new D3NE.NodeEditor("demo@0.1.0", this.container, this.nodeBuilder.componentList(), this.nodeBuilder.menu());
+    this.container = document.getElementById('nodeEditor')
+    this.editor = new D3NE.NodeEditor('demo@0.1.0', this.container, this.nodeBuilder.componentList(), this.nodeBuilder.menu())
 
-    //var nn = componentNum.newNode();
-    //nn.data.num = 2;
-    var n1 = this.nodeBuilder.number.builder(this.nodeBuilder.number.newNode());
-    var n2 = this.nodeBuilder.number.builder(this.nodeBuilder.number.newNode());
-    var add = this.nodeBuilder.add.builder(this.nodeBuilder.add.newNode());
-    var num = this.nodeBuilder.number.builder(this.nodeBuilder.number.newNode());
+    // var nn = componentNum.newNode();
+    // nn.data.num = 2;
+    var n1 = this.nodeBuilder.number.builder(this.nodeBuilder.number.newNode())
+    var n2 = this.nodeBuilder.number.builder(this.nodeBuilder.number.newNode())
+    var add = this.nodeBuilder.add.builder(this.nodeBuilder.add.newNode())
+    var num = this.nodeBuilder.number.builder(this.nodeBuilder.number.newNode())
 
-    n1.position = [80, 200];
-    n2.position = [80, 400];
-    add.position = [500, 240];
-    num.position = [600, 300];
+    n1.position = [80, 200]
+    n2.position = [80, 400]
+    add.position = [500, 240]
+    num.position = [600, 300]
 
-    this.editor.connect(n1.outputs[0], add.inputs[0]);
-    this.editor.connect(n2.outputs[0], add.inputs[1]);
+    this.editor.connect(n1.outputs[0], add.inputs[0])
+    this.editor.connect(n2.outputs[0], add.inputs[1])
 
-    this.editor.addNode(n1);
-    this.editor.addNode(n2);
-    this.editor.addNode(add);
-    this.editor.addNode(num);
+    this.editor.addNode(n1)
+    this.editor.addNode(n2)
+    this.editor.addNode(add)
+    this.editor.addNode(num)
 
-    //  editor.selectNode(tnode);
+    // editor.selectNode(tnode);
 
-    this.engine = new D3NE.Engine('demo@0.1.0', this.nodeBuilder.componentList());
+    this.engine = new D3NE.Engine('demo@0.1.0', this.nodeBuilder.componentList())
 
     this.editor.eventListener.on('change', (_, persistent) => {
       // trigger after each of the first six events
-      //console.log(EventBus)
-      //console.log(self.editor.toJSON())
+      // console.log(EventBus)
+      // console.log(self.editor.toJSON())
 
       EventBus.$emit('VisualEditorChange', self.editor.toJSON())
-   });
+   })
 
-    this.editor.view.zoomAt(this.editor.nodes);
-    this.editor.eventListener.trigger("change");
-    this.editor.view.resize();
-
+    this.editor.view.zoomAt(this.editor.nodes)
+    this.editor.eventListener.trigger("change")
+    this.editor.view.resize()
 
   },
   data () {
