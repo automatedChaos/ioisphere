@@ -1,0 +1,113 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{4}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{}, \showDOI{}, and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showDOI}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showDOI #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showDOI      \undefined \def \showDOI       #1{#1}\fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[\protect\citeauthoryear{Brown, Sentance, Crick, and Humphreys}{Brown
+  et~al\mbox{.}}{2014}]%
+        {Brown:2014:RRC:2642651.2602484}
+\bibfield{author}{\bibinfo{person}{Neil C.~C. Brown}, \bibinfo{person}{Sue
+  Sentance}, \bibinfo{person}{Tom Crick}, {and} \bibinfo{person}{Simon
+  Humphreys}.} \bibinfo{year}{2014}\natexlab{}.
+\newblock \showarticletitle{Restart: The Resurgence of Computer Science in UK
+  Schools}.
+\newblock \bibinfo{journal}{\emph{Trans. Comput. Educ.}} \bibinfo{volume}{14},
+  \bibinfo{number}{2}, Article \bibinfo{articleno}{9} (\bibinfo{date}{June}
+  \bibinfo{year}{2014}), \bibinfo{numpages}{22}~pages.
+\newblock
+\showISSN{1946-6226}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/2602484}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Hansen, Iveland, Carlin, Harlow, and
+  Franklin}{Hansen et~al\mbox{.}}{2016}]%
+        {Hansen}
+\bibfield{author}{\bibinfo{person}{Alexandria~K. Hansen},
+  \bibinfo{person}{Ashley Iveland}, \bibinfo{person}{Cameron Carlin},
+  \bibinfo{person}{Danielle~B. Harlow}, {and} \bibinfo{person}{Diana
+  Franklin}.} \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{User-Centered Design in Block-Based Programming:
+  Developmental \& Pedagogical Considerations for Children}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the The 15th International
+  Conference on Interaction Design and Children}} \emph{(\bibinfo{series}{IDC
+  '16})}. \bibinfo{publisher}{ACM}, \bibinfo{address}{New York, NY, USA},
+  \bibinfo{pages}{147--156}.
+\newblock
+\showISBNx{978-1-4503-4313-8}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/2930674.2930699}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Howland, Good, Robertson, and Manches}{Howland
+  et~al\mbox{.}}{2015}]%
+        {Howland}
+\bibfield{author}{\bibinfo{person}{Kate Howland}, \bibinfo{person}{Judith
+  Good}, \bibinfo{person}{Judy Robertson}, {and} \bibinfo{person}{Andrew
+  Manches}.} \bibinfo{year}{2015}\natexlab{}.
+\newblock \showarticletitle{Every Child a Coder? Research Challenges for a
+  5--18 Programming Curriculum}. In \bibinfo{booktitle}{\emph{Proceedings of
+  the 14th International Conference on Interaction Design and Children}}
+  \emph{(\bibinfo{series}{IDC '15})}. \bibinfo{publisher}{ACM},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{470--473}.
+\newblock
+\showISBNx{978-1-4503-3590-4}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/2771839.2771954}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Resnick}{Resnick}{2007}]%
+        {Resnick:2007:IRN:1254960.1254961}
+\bibfield{author}{\bibinfo{person}{Mitchel Resnick}.}
+  \bibinfo{year}{2007}\natexlab{}.
+\newblock \showarticletitle{All I Really Need to Know (About Creative Thinking)
+  I Learned (by Studying How Children Learn) in Kindergarten}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 6th ACM SIGCHI Conference on
+  Creativity \& Cognition}} \emph{(\bibinfo{series}{C\&C '07})}.
+  \bibinfo{publisher}{ACM}, \bibinfo{address}{New York, NY, USA},
+  \bibinfo{pages}{1--6}.
+\newblock
+\showISBNx{978-1-59593-712-4}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/1254960.1254961}
+\showDOI{\tempurl}
+
+
+\end{thebibliography}
