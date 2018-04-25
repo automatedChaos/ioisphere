@@ -5,10 +5,13 @@
 * @Project: Anemone
 * @Filename: ToggleSwitchManager.js
  * @Last modified by:   alcwynparker
- * @Last modified time: 2018-04-23T23:09:06+01:00
+ * @Last modified time: 2018-04-25T23:16:10+01:00
 */
 import * as THREE from 'three'
 import ToggleSwitch from './ToggleSwitch.js'
+
+const LOW = false;
+const HIGH = true;
 
 class ToggleSwitchManager {
   constructor (parent, camera, rad) {
@@ -27,9 +30,48 @@ class ToggleSwitchManager {
     this.switchNumbers = [1, 4, 9, 14, 19, 23, 27, 30, 33, 33]
     this.LEDTotal = this.calculateTotal(this.switchNumbers);
 
-    this._toggleSwitchStates = this.fillStates(this.LEDTotal)
-
     this.addToggleSwitches(this.switchNumbers)
+
+    this._LEDStates = this.clear(this.LEDTotal)
+    this.ledWrite(192, true)
+    this.ledWrite(0, true)
+    console.log(this._LEDStates)
+    //this._LEDStates = this.randomStates(this.LEDTotal)
+
+    //this.setSwitches(this._LEDStates)
+
+    //this.runScript(1000)
+  }
+
+  /**
+   * ledWrite - update a single LEDs state
+   *
+   * @param  {int} ledNumber
+   * @param  {stateBool} a boolean that is mapped to zero or one
+   */
+  ledWrite (ledNumber, stateBool) {
+    if (ledNumber < this._LEDStates.length) {
+      // convert true of false to one or zero repectively
+      let stateValue = (stateBool ? 1 : 0)
+
+      // update state string with the new state spliced in
+      this._LEDStates = `${this._LEDStates.substr(0, ledNumber)}${stateValue}${this._LEDStates.substr(ledNumber + 1)}`
+    }else{
+      console.log('ledNumber is out of range')
+    }
+  }
+
+
+  runScript (delay) {
+
+    let code = `
+    let timerCallback = () => {
+      this._LEDStates = this.randomStates(this.LEDTotal)
+      this.setSwitches(this._LEDStates)
+      setTimeout(timerCallback,10)
+    }
+    setTimeout(timerCallback,${delay})`
+    eval(code)
   }
 
   // r     is the Radius
@@ -38,11 +80,11 @@ class ToggleSwitchManager {
   addToggleSwitches (switchNum) {
 
       // switch and ring details
-      var ringSpacing = 140/13
+      var ringSpacing = 140/13.5
       var rad = this._rad + this._radOffset
 
       // loop through the rings
-      for(var r = 0; r < switchNum.length - 1; r++){
+      for(var r = 0; r < switchNum.length; r++){
 
         // calculate the distance between switches
         var switchDist = 360/switchNum[r]
@@ -91,6 +133,9 @@ class ToggleSwitchManager {
  * @param  {string} 0s & 1s
  */
   setSwitches (bits) {
+
+    console.log(this._toggleSwitches)
+
     for (var i = 0, l = bits.length; i < l; i+= 1){
 
       if (bits.charAt(i) === '1'){
@@ -103,14 +148,14 @@ class ToggleSwitchManager {
 
 
   /**
-   * fillStates - returns an array of 0s to represent the default of state
+   * clear - returns an array of 0s to represent the default of state
    *
    * @return {Array}  zeros
    */
-  fillStates (numLEDs) {
-    var zeros = []
+  clear (numLEDs) {
+    var zeros = ''
     for (let i = 0; i < numLEDs; i++ ){
-      zeros.push(0)
+      zeros+=(0)
     }
     return zeros
   }
@@ -124,11 +169,13 @@ class ToggleSwitchManager {
    */
   randomStates (numLEDs) {
     // generate some random test data
-    var randomStates = []
+    var randomStates = ''
     for (let i = 0; i < numLEDs; i++){
       let newState = Math.random() < 0.95 ? 0 : 1
-      randomStates.push(newState)
+      randomStates+= newState
     }
+
+    return randomStates
   }
 
   /**

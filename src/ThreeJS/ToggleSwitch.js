@@ -5,7 +5,7 @@
 * @Project: Concept Shed - Anenome
 * @Filename: ToggleSwitch.js
  * @Last modified by:   alcwynparker
- * @Last modified time: 2018-04-23T22:53:41+01:00
+ * @Last modified time: 2018-04-24T23:22:03+01:00
 */
 import * as THREE from 'three'
 
@@ -35,6 +35,8 @@ class ToggleSwitch {
 
     // add the mesh to the scene
     this._parent.add( this._sphere )
+
+  
   }
 
   digitalWrite (state) {
@@ -42,7 +44,7 @@ class ToggleSwitch {
     if (state){
       this._sphere.material = this._onStateMaterial
     }else{
-      this._sphere.material =  this._offStateMaterial 
+      this._sphere.material =  this._offStateMaterial
     }
   }
 }
