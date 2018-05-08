@@ -2,7 +2,7 @@
 @Author: alcwynparker
 @Date:   2018-03-13T00:42:25+00:00
 @Last modified by:   alcwynparker
-@Last modified time: 2018-04-23T22:54:32+01:00
+@Last modified time: 2018-05-02T22:48:46+01:00
 -->
 
 <template>
@@ -30,10 +30,15 @@ export default {
     var add = this.nodeBuilder.add.builder(this.nodeBuilder.add.newNode())
     var num = this.nodeBuilder.number.builder(this.nodeBuilder.number.newNode())
 
+    var loop = this.nodeBuilder.loop.builder(this.nodeBuilder.loop.newNode())
+    var bool = this.nodeBuilder.bool.builder(this.nodeBuilder.bool.newNode())
+
     n1.position = [80, 200]
     n2.position = [80, 400]
     add.position = [500, 240]
     num.position = [600, 300]
+    loop.position = [200, 200]
+    bool.position = [10, 10]
 
     this.editor.connect(n1.outputs[0], add.inputs[0])
     this.editor.connect(n2.outputs[0], add.inputs[1])
@@ -42,6 +47,8 @@ export default {
     this.editor.addNode(n2)
     this.editor.addNode(add)
     this.editor.addNode(num)
+    this.editor.addNode(loop)
+    this.editor.addNode(bool)
 
     // editor.selectNode(tnode);
 

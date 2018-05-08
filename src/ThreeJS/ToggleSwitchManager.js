@@ -5,7 +5,7 @@
 * @Project: Anemone
 * @Filename: ToggleSwitchManager.js
  * @Last modified by:   alcwynparker
- * @Last modified time: 2018-04-25T23:16:10+01:00
+ * @Last modified time: 2018-04-25T23:33:39+01:00
 */
 import * as THREE from 'three'
 import ToggleSwitch from './ToggleSwitch.js'
@@ -33,12 +33,10 @@ class ToggleSwitchManager {
     this.addToggleSwitches(this.switchNumbers)
 
     this._LEDStates = this.clear(this.LEDTotal)
-    this.ledWrite(192, true)
-    this.ledWrite(0, true)
-    console.log(this._LEDStates)
-    //this._LEDStates = this.randomStates(this.LEDTotal)
 
-    //this.setSwitches(this._LEDStates)
+    this.ledWriteScript(192, true)
+
+    this.setSwitches(this._LEDStates)
 
     //this.runScript(1000)
   }
@@ -59,6 +57,11 @@ class ToggleSwitchManager {
     }else{
       console.log('ledNumber is out of range')
     }
+  }
+
+  ledWriteScript(ledNumber, stateBool){
+    let code = `this.ledWrite(${ledNumber},${stateBool})`
+    eval(code)
   }
 
 
@@ -84,7 +87,7 @@ class ToggleSwitchManager {
       var rad = this._rad + this._radOffset
 
       // loop through the rings
-      for(var r = 0; r < switchNum.length; r++){
+      for(var r = switchNum.length - 1; r >= 0; r--){
 
         // calculate the distance between switches
         var switchDist = 360/switchNum[r]
@@ -106,6 +109,17 @@ class ToggleSwitchManager {
       this._meshGroup.rotation.x += Math.radians(-90);
   }
 
+  /**
+   * addSwitch - takes the polar coordinates and converts them to cartesian for
+   * placing in the 3d scene. Then creates a switch and adds it to the array
+   * r - is the Radius
+   * alpha - is the horizontal angle from the X axis
+   * polar - is the vertical angle from the Z axis
+   *
+   * @param  {Number} polar
+   * @param  {Number} alpha
+   * @param  {Number} rad
+   */
   addSwitch (polar, alpha, rad) {
     // POLAR -> CARTESIAN
     var x = rad * Math.sin(polar) * Math.cos(alpha)
@@ -134,8 +148,6 @@ class ToggleSwitchManager {
  */
   setSwitches (bits) {
 
-    console.log(this._toggleSwitches)
-
     for (var i = 0, l = bits.length; i < l; i+= 1){
 
       if (bits.charAt(i) === '1'){
@@ -145,7 +157,6 @@ class ToggleSwitchManager {
       }
     }
   }
-
 
   /**
    * clear - returns an array of 0s to represent the default of state
