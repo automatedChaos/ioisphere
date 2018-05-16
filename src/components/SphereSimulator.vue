@@ -6,15 +6,21 @@
 -->
 <template>
   <div class="sphere-simulator">
+    <h1>Simulator</h1>
+    <a v-on:click="playSimulation" class="button play"></a>
+    <a v-on:click="stopSimulation" class="button stop"></a>
     <div id="renderer"></div>
+    <div id="logo">
+      <img class="logo" src="../assets/ioi.jpg">
+    </div>
   </div>
 </template>
 
 <script>
 import ThreeEnv from '../ThreeJS/ThreeEnv.js'
 import EventBus from '@/components/utils/EventBus.js'
+import TickManager from '../ThreeJS/TickManager.js'
 let simulation = null;
-
 
 export default {
   name: 'SphereSimulator',
@@ -26,9 +32,25 @@ export default {
       console.log(payload)
     })
   },
+  methods: {
+    loop: function () {
+      console.log('tick')
+      if (this.isPlaying) window.requestAnimationFrame(this.loop)
+    },
+    playSimulation: function () {
+      console.log('PLAY')
+      this.isPlaying = true
+      window.requestAnimationFrame(this.loop)
+    },
+    stopSimulation: function () {
+      console.log('STOP')
+      this.isPlaying = false
+    }
+  },
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      isPlaying: false
     }
   }
 }
