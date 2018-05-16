@@ -7,11 +7,13 @@
 
 <template>
   <div class="visual-editor">
+    <h1>Visual Code Editor</h1>
     <div id="nodeEditor" class="node-editor"></div>
   </div>
 </template>
 
 <script>
+import D3NodeEditor from '@/Models/D3NodeEditor'
 import NodeBuilder from '@/Models/NodeBuilder'
 import EventBus from '@/components/utils/EventBus.js'
 
@@ -20,9 +22,11 @@ export default {
   mounted: function () {
     let self = this
 
+
     this.container = document.getElementById('nodeEditor')
     this.editor = new D3NE.NodeEditor('demo@0.1.0', this.container, this.nodeBuilder.componentList(), this.nodeBuilder.menu())
 
+    /*
     // var nn = componentNum.newNode();
     // nn.data.num = 2;
     var n1 = this.nodeBuilder.number.builder(this.nodeBuilder.number.newNode())
@@ -49,6 +53,7 @@ export default {
     this.editor.addNode(num)
     this.editor.addNode(loop)
     this.editor.addNode(bool)
+    */
 
     // editor.selectNode(tnode);
 
@@ -95,6 +100,9 @@ export default {
 }
 .socket.number{
     background: #96b38a
+}
+.visual-editor{
+  position:relative;
 }
 
 

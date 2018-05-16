@@ -15,7 +15,7 @@
       <SplitArea class="bottom-panel">
         <Split >
           <SplitArea :size="70">
-              <router-view/>
+            <TutorialPanel />
           </SplitArea>
           <SplitArea :size="30">
               <SphereSimulator />
@@ -31,6 +31,7 @@
 <script>
 import VisualEditor from './components/VisualEditor'
 import SphereSimulator from './components/SphereSimulator'
+import TutorialPanel from './components/TutorialPanel'
 
 export default {
   name: 'App',
@@ -38,7 +39,7 @@ export default {
     var parentPanel = document.getElementsByClassName('parent-split')
     parentPanel[0].style.height = `${window.innerHeight}px`
   },
-  components: {VisualEditor, SphereSimulator}
+  components: {VisualEditor, SphereSimulator, TutorialPanel}
 }
 </script>
 

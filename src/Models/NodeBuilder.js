@@ -14,9 +14,10 @@ class NodeBuilder {
     this.lessThan = this.createLessThanComponent()
     this.number = this.createNumberComponent()
     this.add = this.createAddComponent()
-    this.loop = this.createLoopComponent()
+    this.tick = this.createTickComponent()
     this.bool = this.createBoolComponent()
     this.toggle = this.createToggleComponent()
+    this.toggleLED = this.createToggleLEDComponent()
 
     this.compareBool = this.createCompareBoolComponent()
 
@@ -32,10 +33,11 @@ class NodeBuilder {
       this.lessThan,
       this.number,
       this.add,
-      this.loop,
+      this.tick,
       this.bool,
       this.LEDWrite,
       this.compareBool,
+      this.toggleLED,
       this.toggle
     ]
   }
@@ -43,6 +45,8 @@ class NodeBuilder {
   menu () {
     return new D3NE.ContextMenu({
      Values: {
+        Tick: this.tick,
+        ['Toggle LED']: this.toggleLED,
         Value: this.number,
         LEDWrite: this.LEDWrite,
         ['Compare Bool']: this.compareBool,
@@ -159,26 +163,30 @@ class NodeBuilder {
    *
    * @return {Coponent Object}
    */
-    createLoopComponent(){
+    createTickComponent(){
       let self = this
-      return new D3NE.Component("Loop", {
+      return new D3NE.Component("Tick", {
         builder(node) {
 
-          var outSocket = new D3NE.Output("Start", self.anyTypeSocket)
+          let outSocket = new D3NE.Output("Start", self.anyTypeSocket)
 
+          let nameTemplate = '<input type="text" placeholder="Unique name">'
+          let nameControl = new D3NE.Control(nameTemplate, (element, control) => {
+            control.putData('name', '')
+            element.value = ''
+            element.addEventListener('change',()=>{
+              control.putData('name', element.value) // put data in the node under the key "num"
+            });
+          });
 
-          var nameControl = new D3NE.Control(
-            '<input type="text" placeholder="Unique name">',
-            (el, control) => {
-              control.setValue = val => {
-                el.value = val
-              };
-            }
-          );
-
-          var numControl = new D3NE.Control(
-            '<input type="number" placeholder="Interval">'
-          );
+          var numTemplate = '<input type="number" placeholder="Interval">'
+          var numControl = new D3NE.Control(numTemplate, (element, control) => {
+            control.putData('interval', 1000)
+            element.value = 1000
+            element.addEventListener('change',()=>{
+              control.putData('interval', element.value) // put data in the node under the key "num"
+            });
+          });
 
           return node
           .addControl(nameControl)
@@ -304,6 +312,35 @@ class NodeBuilder {
           }
         });
       }
+
+      /**
+       * createToggleLEDComponent
+       *
+       * @return {Coponent Object}
+       */
+        createToggleLEDComponent(){
+          let self = this
+          return new D3NE.Component("ToggleLED", {
+            builder(node) {
+              var processIn = new D3NE.Input("In", self.anyTypeSocket)
+              var processOut = new D3NE.Output("Out", self.anyTypeSocket)
+
+              var numControl = new D3NE.Control(
+                '<input type="number" placeholder="LED Number">'
+              );
+
+              return node
+              .addInput(processIn)
+              .addOutput(processOut)
+              .addControl(numControl)
+            },
+            worker(node, inputs, outputs) {
+              //var sum = inputs[0][0] + inputs[1][0]
+              //editor.nodes.find(n => n.id == node.id).controls[0].setValue(sum);
+              //outputs[0] = sum
+            }
+          });
+        }
 
       /**
        * createAddComponent - creates the comonent for a number

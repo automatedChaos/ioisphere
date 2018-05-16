@@ -38,7 +38,7 @@ class ToggleSwitchManager {
 
     this.setSwitches(this._LEDStates)
 
-    //this.runScript(1000)
+    this.runScript(3000)
   }
 
   /**
@@ -67,14 +67,32 @@ class ToggleSwitchManager {
 
   runScript (delay) {
 
+    let helter = `
+      var num = this.LEDTotal
+
+      let timerCallback = () => {
+
+        this._LEDStates = this.clear(this.LEDTotal)
+
+        this.ledWrite(num, true)
+        this.setSwitches(this._LEDStates)
+        setTimeout(timerCallback,100)
+        num--
+        if (num === 0) num = this.LEDTotal
+      }
+      setTimeout(timerCallback, 3000)
+    `
+
     let code = `
+    var num = 0;
     let timerCallback = () => {
       this._LEDStates = this.randomStates(this.LEDTotal)
       this.setSwitches(this._LEDStates)
       setTimeout(timerCallback,10)
     }
     setTimeout(timerCallback,${delay})`
-    eval(code)
+
+    eval(helter)
   }
 
   // r     is the Radius
@@ -127,8 +145,8 @@ class ToggleSwitchManager {
     var z = rad * Math.cos(polar);
 
     // Materials
-    var onStateMaterial   = new THREE.MeshBasicMaterial( { color:0xff0000, wireframe: false } )
-    var offStateMaterial  = new THREE.MeshBasicMaterial( { color:0x00ff00, wireframe: false } )
+    var onStateMaterial   = new THREE.MeshBasicMaterial( { color:0xef4224, wireframe: false } )
+    var offStateMaterial  = new THREE.MeshBasicMaterial( { color:0x877c78, wireframe: false } )
 
     // Mesh
     var geometry = new THREE.SphereGeometry( 10, 32, 32 )

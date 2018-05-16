@@ -2,8 +2,86 @@
 // @Date:   2017-06-18T15:33:02+01:00
 // @Last modified by:   alcwynparker
 // @Last modified time: 2018-03-12T23:13:59+00:00
-.visual-editor {
-  width:50%;
-  height:50%;
-  background: blue;
+.tutorial-panel {
+  height:100%;
+  position:relative;
+  background-color: white;
+}
+
+.sidebar {
+  position: absolute;
+  display: block;
+  background: white;
+  width:30%;
+  height:100%;
+  z-index:1;
+  -webkit-box-shadow: 13px 3px 23px 1px rgba(235,235,235,1);
+  -moz-box-shadow: 13px 3px 23px 1px rgba(235,235,235,1);
+  box-shadow: 13px 3px 23px 1px rgba(235,235,235,1);
+  ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li{
+      padding:0;
+      margin:0;
+      a{
+        display: block;
+        width:90%;
+        height:8%;
+        margin:2% 5%;
+        text-decoration: none;
+        text-align: center;
+        font-family: 'Indie Flower', cursive;
+        color: black;
+        font-size:2em;
+        border-top-left-radius: 255px 15px;
+        border-top-right-radius: 15px 225px;
+        border-bottom-right-radius: 225px 15px;
+        border-bottom-left-radius:15px 255px;
+        border:dotted 2px #41403E;
+        &:hover{
+          background:$ioi-pink;
+        }
+      }
+    }
+  }
+}
+.tutorial-content{
+    width: 69%;
+    height:100%;
+    position:absolute;
+    right:0px;
+    top:0px;
+    overflow-y: auto;
+}
+.tutorial-content::-webkit-scrollbar-track {
+	background-color: $ioi-light-gray;
+  width:18px;
+}
+.tutorial-content::-webkit-scrollbar {
+	width: 18px;
+	background-color: #F5F5F5;
+}
+.tutorial-content::-webkit-scrollbar-thumb {
+	background-color: $ioi-blue;
+  border-radius: 0px;
+}
+.tutorial-content-container{
+  color:black;
+  width:100%;
+  img{
+    margin:2%;
+    width:16%;
+    float:left;
+  }
+  .tutorial-body{
+    width:76%;
+    margin:2% 4% 2% 0%;
+    float:right;
+    min-height:400px;
+  }
+}
+.router-link-exact-active{
+  background: $ioi-green;
 }

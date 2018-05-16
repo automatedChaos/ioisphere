@@ -3,7 +3,46 @@
 // @Last modified by:   alcwynparker
 // @Last modified time: 2018-03-12T23:14:03+00:00
 .visual-editor {
-  width:50%;
-  height:50%;
-  background: blue;
+
+  /* altered from: http://css3pie.com/demos/gradient-patterns/ */
+  background-size: 100px 100px, 100px 100px, 10px 10px, 10px 10px;
+  background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+  background-color: white;
+  background-image: -webkit-linear-gradient(#ddd 1px, transparent 1px),
+                    -webkit-linear-gradient(0, #ddd 1px, transparent 1px),
+                    -webkit-linear-gradient(rgba(20,20,220,.1) 1px, transparent 1px),
+                    -webkit-linear-gradient(0, rgba(20,20,220,.1) 1px, transparent 1px);
+
+  h1{
+    height: auto;
+    font-size: 1.5em;
+    overflow: hidden;
+    margin:0px;
+    padding:5px;
+    background: white;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+    position:absolute;
+    left:10px;
+    top:10px;
+  }
+}
+.sidebar{
+  h2{
+    margin:3px;
+  }
+}
+.node-editor .node{
+  border-color: $ioi-dark-gray;
+}
+
+.node-editor .node .socket{
+  border: 1px solid #333;
+}
+
+.node-editor .toggleled{
+  background: $ioi-blue;
+}
+.node-editor .selected{
+  background: $ioi-yellow;
+  border-color: $ioi-light-gray;
 }

@@ -49,6 +49,7 @@ class D3NodeEditor {
     // console.log(EventBus)
     // console.log(self.editor.toJSON())
 
+    // update other components
     EventBus.$emit('VisualEditorChange', self.editor.toJSON())
   }
 }
