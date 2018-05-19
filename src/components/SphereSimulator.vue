@@ -29,7 +29,29 @@ export default {
 
     // Listen for the i-got-clicked event and its payload.
     EventBus.$on('VisualEditorChange', payload => {
-      console.log(payload)
+      // simplify payload
+      let nodes = payload.nodes
+
+      // loop through each node
+      for (let node in nodes) {
+        if (nodes.hasOwnProperty(node)) {
+
+          // get node type so that we can process it
+          let type = nodes[node].title
+
+          switch(type){
+            case 'Tick':
+              // add the tick to the stack
+              TickManager.processTick(nodes[node])
+              break;
+            default:
+              console.log('Node Unrecognised')
+              break;
+          }
+
+        }
+      }
+
     })
   },
   methods: {

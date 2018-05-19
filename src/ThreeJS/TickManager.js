@@ -12,7 +12,6 @@ class TickManager {
     this.ticks = []
   }
 
-
   /**
    * processTick - validates whether the tick should be added or not
    *
