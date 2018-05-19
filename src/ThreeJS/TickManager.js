@@ -18,7 +18,10 @@ class TickManager {
    * @param  {Object} tick node
    */
   processTick (tick) {
-    if (!this.tickExists(tick.id)) this.ticks.push(tick)
+    if (!this.tickExists(tick.id)) {
+      tick.prevTick =  window.performance.now()
+      this.ticks.push(tick)
+    }
   }
 
   /**
@@ -38,8 +41,18 @@ class TickManager {
     }
   }
 
-  updateTicks () {
-    console.log('UPDATE')
+  update (now) {
+    // loop through all the ticks and set previous tick to now
+    for (let i = 0, l = this.ticks.length; i < l; i+= 1){
+
+      let timePassed = now - this.ticks[i].prevTick;
+      let interval = this.ticks[i].data.interval;
+
+      if (timePassed > interval){
+        console.log(this.ticks[i].id + ': TICK')
+        this.ticks[i].prevTick = now
+      }
+    }
   }
 
   /**
@@ -48,18 +61,20 @@ class TickManager {
    * @return {type}  description
    */
   deactivateTicks () {
+    // loop through all the ticks and set previous tick to now
+    for (let i = 0, l = this.ticks.length; i < l; i+= 1){
 
+    }
   }
 
   /**
    * activateTicks - loops through and adds all the timers
    */
-  activateTicks () {
-
-  }
-
-  outputTest () {
-    console.log('magic')
+  activateTicks (now) {
+    // loop through all the ticks and set previous tick to now
+    for (let i = 0, l = this.ticks.length; i < l; i+= 1){
+      //this.ticks[i].prevTick = now;
+    }
   }
 }
 
