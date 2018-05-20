@@ -7,9 +7,11 @@
  * @Last modified by:   alcwynparker
  * @Last modified time: 2018-04-24T23:22:03+01:00
 */
+
 class TickManager {
   constructor(){
     this.ticks = []
+    this.switchControls = null
   }
 
   /**
@@ -22,6 +24,10 @@ class TickManager {
       tick.prevTick =  window.performance.now()
       this.ticks.push(tick)
     }
+  }
+
+  setSwitchControls (sm){
+    this.switchControls = sm
   }
 
   /**
@@ -41,18 +47,40 @@ class TickManager {
     }
   }
 
+
+  /**
+   * update - called every requestAnimationFrame and used trigger ticks
+   *
+   * @param  {Number} now timestamp
+   */
   update (now) {
     // loop through all the ticks and set previous tick to now
     for (let i = 0, l = this.ticks.length; i < l; i+= 1){
 
+      // get time sensitive values
       let timePassed = now - this.ticks[i].prevTick;
       let interval = this.ticks[i].data.interval;
 
+      // check to see if it is time to triger the node
       if (timePassed > interval){
-        console.log(this.ticks[i].id + ': TICK')
+        // process the nodes for this tick
+        this.processTickNodes(i)
+        // set prevTick to now ready for the next time around.
         this.ticks[i].prevTick = now
       }
     }
+  }
+
+  /**
+   * processTickNodes - loop through and action all child nodes
+   *
+   * @param  {type} index description
+   * @return {type}       description
+   */
+  processTickNodes (index) {
+    console.log(index + ': TICK')
+    this.switchControls.toggleLED(10)
+    this.switchControls.updateLEDs()
   }
 
   /**

@@ -225,14 +225,17 @@ class ThreeEnv {
    *
    */
   render() {
-
     //console.log(this.renderer)
     if (this.renderer != null){
       this.renderer.render( this.scene, this.camera )
     }
-
   }
 
+
+  /**
+   * checkDims - used for resizing the canvas
+   *
+   */
   checkDims () {
     if (this.containerHeight != this.container.parentElement.offsetHeight ||
       this.containerWidth != this.container.parentElement.offsetWidth){
@@ -254,9 +257,7 @@ class ThreeEnv {
 
       var light = new THREE.PointLight( 0xff0000, 1, 100 )
     }
-
   }
-
 }
 
 export default ThreeEnv

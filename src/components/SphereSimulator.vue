@@ -26,6 +26,7 @@ export default {
   name: 'SphereSimulator',
   mounted: function () {
     simulation = new ThreeEnv(window, document)
+    
 
     // Listen for the i-got-clicked event and its payload.
     EventBus.$on('VisualEditorChange', payload => {

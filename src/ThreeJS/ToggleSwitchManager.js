@@ -13,9 +13,12 @@ import ToggleSwitch from './ToggleSwitch.js'
 const LOW = false;
 const HIGH = true;
 
+// Singleton
 class ToggleSwitchManager {
+
   constructor (parent, camera, rad) {
     'use strict'
+
     // create a mesh group and add it to the parent scene
     this._parent = parent
     this._camera = camera
@@ -34,11 +37,15 @@ class ToggleSwitchManager {
 
     this._LEDStates = this.clear(this.LEDTotal)
 
-    this.ledWriteScript(192, true)
+    // TEST: turn last one on
+    //  this.ledWriteScript(192, true)
 
-    this.setSwitches(this._LEDStates)
+    // TEST: toggle LED 100
+    //this.toggleLED(100)
 
-    this.runScript(3000)
+    this.updateLEDs(this._LEDStates)
+
+    //this.runScript(3000)
   }
 
   /**
@@ -64,11 +71,14 @@ class ToggleSwitchManager {
     eval(code)
   }
 
+  loadScript(script){
+    console.log(script)
+  }
 
   runScript (delay) {
 
     let helter = `
-      var num = this.LEDTotal
+      var num = this.LEDTotal - 1
 
       let timerCallback = () => {
 
@@ -78,7 +88,7 @@ class ToggleSwitchManager {
         this.setSwitches(this._LEDStates)
         setTimeout(timerCallback,100)
         num--
-        if (num === 0) num = this.LEDTotal
+        if (num === 0) num = this.LEDTotal - 1
       }
       setTimeout(timerCallback, 3000)
     `
@@ -164,7 +174,7 @@ class ToggleSwitchManager {
  *
  * @param  {string} 0s & 1s
  */
-  setSwitches (bits) {
+  updateLEDs (bits) {
 
     for (var i = 0, l = bits.length; i < l; i+= 1){
 
@@ -189,6 +199,21 @@ class ToggleSwitchManager {
     return zeros
   }
 
+  /**
+   * toggleLED - check the state of an LED then flip it
+   *
+   * @param  {Number} index - of LED to be toggled
+   */
+  toggleLED (index) {
+
+    console.log(this._LEDStates)
+    let charInFocus = this._LEDStates.charAt(index)
+
+    let newChar = (charInFocus === '0' ? '1' : '0')
+
+    this._LEDStates = this.replaceAt(this._LEDStates, index, newChar)
+    //console.log(this._LEDStates)
+  }
 
   /**
    * randomStates - produces a certain number of random 0s and 1s in an arrat
@@ -219,6 +244,18 @@ class ToggleSwitchManager {
       total += switchNumbers[i]
     }
     return total
+  }
+
+  /**
+   * replaceAt - replaces char at specif index
+   *
+   * @param  {String} string      the phrase in question
+   * @param  {Number} index       - of char to be replaced
+   * @param  {Char} replacement   - the char to be inserted
+   * @return {String}             the new phrase
+   */
+  replaceAt(string, index, replacement) {
+    return string.substr(0, index) + replacement+ string.substr(index + replacement.length);
   }
 }
 
