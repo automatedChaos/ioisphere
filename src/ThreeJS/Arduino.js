@@ -9,12 +9,13 @@
 */
 import * as THREE from 'three'
 import ToggleSwitch from './ToggleSwitch.js'
+import Ticks from '../ThreeJS/Ticks.js'
 
 const LOW = false;
 const HIGH = true;
 
 // Singleton
-class ToggleSwitchManager {
+class Arduino {
 
   constructor (parent, camera, rad) {
     'use strict'
@@ -259,4 +260,4 @@ class ToggleSwitchManager {
   }
 }
 
-export default ToggleSwitchManager
+export default Arduino

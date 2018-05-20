@@ -17,16 +17,14 @@
 </template>
 
 <script>
-import ThreeEnv from '../ThreeJS/ThreeEnv.js'
+import Simulation from '../ThreeJS/Simulation.js'
 import EventBus from '@/components/utils/EventBus.js'
-import TickManager from '../ThreeJS/TickManager.js'
 let simulation = null;
 
 export default {
   name: 'SphereSimulator',
   mounted: function () {
-    simulation = new ThreeEnv(window, document)
-    
+    simulation = new Simulation(window, document)
 
     // Listen for the i-got-clicked event and its payload.
     EventBus.$on('VisualEditorChange', payload => {
@@ -53,7 +51,7 @@ export default {
           switch(type){
             case 'Tick':
               // add the tick to the stack
-              TickManager.processTick(nodes[node])
+              simulation.tickManager.processTick(nodes[node])
               break;
             default:
               console.log('Node Unrecognised')

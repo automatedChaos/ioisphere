@@ -8,7 +8,7 @@
  * @Last modified time: 2018-04-24T23:22:03+01:00
 */
 
-class TickManager {
+class Ticks {
   constructor(){
     this.ticks = []
     this.switchControls = null
@@ -26,8 +26,8 @@ class TickManager {
     }
   }
 
-  setSwitchControls (sm){
-    this.switchControls = sm
+  setEnv (simulator){
+    this.env = simulator
   }
 
   /**
@@ -106,4 +106,4 @@ class TickManager {
   }
 }
 
-export default new TickManager()
+export default Ticks

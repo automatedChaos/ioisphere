@@ -13,7 +13,8 @@ import * as OC from 'three-orbit-controls'
 let OrbitControls = OC(THREE)
 
 import * as SubdivisionModifier from 'three-subdivision-modifier'
-import ToggleSwitchManager from './ToggleSwitchManager.js'
+import Arduino from './Arduino.js'
+import Ticks from './Ticks.js'
 
 const HIGH  = 1
 const LOW   = 0
@@ -35,9 +36,11 @@ Math.radians = function(degrees) {
   return degrees * Math.PI / 180;
 };
 
-class ThreeEnv {
+class Simulation {
   constructor(window, document) {
     'use strict'
+
+    this.ticks = new Ticks()
 
     this.container // the elm that the three env is appended to
     this.containerWidth
@@ -58,7 +61,8 @@ class ThreeEnv {
     this.mainSphereGeometry
     this.base
     this.baseGeometry
-    this.switchManager
+
+    this.arduino
 
     this.raycaster = new THREE.Raycaster()
     this.mouse = new THREE.Vector2()
@@ -110,14 +114,13 @@ class ThreeEnv {
 
     // add the objects to the scene
     this.addGeometry()
-    this.switchManager = new ToggleSwitchManager(this.scene, this.camera, this.anemoneRad)
+    this.arduino = new Arduino(this.scene, this.camera, this.anemoneRad)
 
     // add all event listeners
     this.addOnControlsChange()
     this.addOnMouseClick()
     this.addOnWindowResize()
   }
-
 
   /**
    * addGeometry - creates the core geometry
@@ -194,7 +197,7 @@ class ThreeEnv {
 
       // calculate objects intersecting the picking ray
 
-      var intersects = this.raycaster.intersectObjects( this.switchManager._meshGroup.children );
+      var intersects = this.raycaster.intersectObjects( this.arduino._meshGroup.children );
 
       // only interact with the first intersect
       if (intersects.length > 0)	intersects[ 0 ].object.material.color.set( 0xff0000 );
@@ -213,7 +216,7 @@ class ThreeEnv {
   animate() {
 
   	requestAnimationFrame( this.animate.bind(this) )
-  	this.switchManager._meshGroup.rotation.z += 0.001
+  	this.arduino._meshGroup.rotation.z += 0.001
     this.checkDims();
   	this.render()
 
@@ -258,6 +261,7 @@ class ThreeEnv {
       var light = new THREE.PointLight( 0xff0000, 1, 100 )
     }
   }
+
 }
 
-export default ThreeEnv
+export default Simulation
