@@ -9,7 +9,8 @@
 */
 
 class Ticks {
-  constructor(){
+  constructor(a){
+    this.arduino = a
     this.ticks = []
     this.switchControls = null
   }
@@ -24,10 +25,6 @@ class Ticks {
       tick.prevTick =  window.performance.now()
       this.ticks.push(tick)
     }
-  }
-
-  setEnv (simulator){
-    this.env = simulator
   }
 
   /**
@@ -79,8 +76,8 @@ class Ticks {
    */
   processTickNodes (index) {
     console.log(index + ': TICK')
-    this.switchControls.toggleLED(10)
-    this.switchControls.updateLEDs()
+    this.arduino.toggleLED(10)
+    this.arduino.updateLEDs()
   }
 
   /**

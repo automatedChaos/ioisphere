@@ -175,7 +175,7 @@ class Arduino {
  *
  * @param  {string} 0s & 1s
  */
-  updateLEDs (bits) {
+  updateLEDs (bits = this._LEDStates) {
 
     for (var i = 0, l = bits.length; i < l; i+= 1){
 

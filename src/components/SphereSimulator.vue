@@ -51,7 +51,7 @@ export default {
           switch(type){
             case 'Tick':
               // add the tick to the stack
-              simulation.tickManager.processTick(nodes[node])
+              simulation.ticks.processTick(nodes[node])
               break;
             default:
               console.log('Node Unrecognised')
@@ -61,7 +61,7 @@ export default {
       }
     },
     loop: function (timestamp) {
-      TickManager.update(timestamp)
+      simulation.ticks.update(timestamp)
       if (this.isPlaying) window.requestAnimationFrame(this.loop)
     },
     playSimulation: function () {
@@ -72,7 +72,6 @@ export default {
     stopSimulation: function () {
       console.log('STOP')
       this.isPlaying = false
-      TickManager.deactivateTicks()
     }
   },
   data () {

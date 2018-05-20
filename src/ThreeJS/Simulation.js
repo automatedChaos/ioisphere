@@ -40,7 +40,7 @@ class Simulation {
   constructor(window, document) {
     'use strict'
 
-    this.ticks = new Ticks()
+    this.ticks
 
     this.container // the elm that the three env is appended to
     this.containerWidth
@@ -115,6 +115,7 @@ class Simulation {
     // add the objects to the scene
     this.addGeometry()
     this.arduino = new Arduino(this.scene, this.camera, this.anemoneRad)
+    this.ticks = new Ticks(this.arduino)
 
     // add all event listeners
     this.addOnControlsChange()
@@ -257,9 +258,12 @@ class Simulation {
       let point = new THREE.Vector3(0, 200, 0)
       this.camera.lookAt( point )
 
-
       var light = new THREE.PointLight( 0xff0000, 1, 100 )
     }
+  }
+
+  loadCode () {
+
   }
 
 }
