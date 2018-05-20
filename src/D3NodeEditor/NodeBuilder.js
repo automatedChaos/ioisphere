@@ -4,20 +4,30 @@
  * @Last modified by:   alcwynparker
  * @Last modified time: 2018-05-03T00:02:41+01:00
  */
-// import axios from 'axios'
-// axios.defaults.withCredentials = true
+
+// TRIGGERS
+import tick from './Components/Trigger/Tick.js'
+
+// LED
+import toggleLED from './Components/LED/ToggleLED.js'
 
 class NodeBuilder {
   constructor () {
+
+    this.tick = tick()
+
+    this.toggleLED = toggleLED()
+
+    // TODO: Legacy ---- --- --- -- ---- -- -- -- ---
     this.anyTypeSocket = new D3NE.Socket('ny', 'Any type', 'hint')
     this.numSocket = new D3NE.Socket('number', 'Number value', 'hint')
     this.lessThan = this.createLessThanComponent()
     this.number = this.createNumberComponent()
     this.add = this.createAddComponent()
-    this.tick = this.createTickComponent()
+
     this.bool = this.createBoolComponent()
     this.toggle = this.createToggleComponent()
-    this.toggleLED = this.createToggleLEDComponent()
+
 
     this.compareBool = this.createCompareBoolComponent()
 
@@ -313,34 +323,6 @@ class NodeBuilder {
         });
       }
 
-      /**
-       * createToggleLEDComponent
-       *
-       * @return {Coponent Object}
-       */
-        createToggleLEDComponent(){
-          let self = this
-          return new D3NE.Component("ToggleLED", {
-            builder(node) {
-              var processIn = new D3NE.Input("In", self.anyTypeSocket)
-              var processOut = new D3NE.Output("Out", self.anyTypeSocket)
-
-              var numControl = new D3NE.Control(
-                '<input type="number" placeholder="LED Number">'
-              );
-
-              return node
-              .addInput(processIn)
-              .addOutput(processOut)
-              .addControl(numControl)
-            },
-            worker(node, inputs, outputs) {
-              //var sum = inputs[0][0] + inputs[1][0]
-              //editor.nodes.find(n => n.id == node.id).controls[0].setValue(sum);
-              //outputs[0] = sum
-            }
-          });
-        }
 
       /**
        * createAddComponent - creates the comonent for a number
