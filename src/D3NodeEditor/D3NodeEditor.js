@@ -7,7 +7,7 @@
  */
 
 // TODO: This should be broken into distinct types
-import NodeBuilder from '@/Models/NodeBuilder'
+import NodeBuilder from '@/D3NodeEditor/NodeBuilder'
 
 class D3NodeEditor {
 

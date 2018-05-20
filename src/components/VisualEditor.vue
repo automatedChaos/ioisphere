@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import D3NodeEditor from '@/Models/D3NodeEditor'
-import NodeBuilder from '@/Models/NodeBuilder'
+import D3NodeEditor from '@/D3NodeEditor/D3NodeEditor'
+import NodeBuilder from '@/D3NodeEditor/NodeBuilder'
 import EventBus from '@/components/utils/EventBus.js'
 
 export default {

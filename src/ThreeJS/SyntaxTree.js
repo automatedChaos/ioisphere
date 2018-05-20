@@ -83,7 +83,10 @@ class SyntaxTree {
    */
   processTickNode (index) {
 
-    console.log(this.ticks[index])
+    let next = this.ticks[index].outputs[0].connections[0]
+
+    console.log(this.nodes[next.node])
+    //console.log(this.ticks[index].outputs[0].connections.length)
 
     //console.log(index + ': TICK')
     //this.arduino.toggleLED(10)
