@@ -8,39 +8,46 @@
  * @Last modified time: 2018-04-24T23:22:03+01:00
 */
 
-class Ticks {
+class SyntaxTree {
   constructor(a){
     this.arduino = a
+    this.nodes = null
     this.ticks = []
     this.switchControls = null
   }
 
   /**
-   * processTick - validates whether the tick should be added or not
+   * processSyntaxTree - Process the changes to the
+   * syntax tree.
    *
-   * @param  {Object} tick node
+   * @param  {object} nodes list of objects that represent nodes
    */
-  processTick (tick) {
-    if (!this.tickExists(tick.id)) {
-      tick.prevTick =  window.performance.now()
-      this.ticks.push(tick)
-    }
-  }
+  processSyntaxTree (nodes) {
 
-  /**
-   * tickExists - Checks the tick array for a tick with the same id
-   *
-   * @param  {String} id id of the tick
-   * @return {boolean}   whether it exists or not
-   */
-  tickExists (id) {
-    // filter out any that don't match
-    let results = this.ticks.filter(ticks => { return ticks.id === id })
-    // return result
-    if (results.length > 0){
-      return true
-    }else{
-      return false
+    // reset everything
+    this.ticks = []
+
+    // save a copy of the original syntax tree
+    this.nodes = nodes
+
+    // loop through each node
+    for (let node in nodes) {
+      if (nodes.hasOwnProperty(node)) {
+
+        // get node type so that we can process it
+        let type = nodes[node].title
+
+        switch(type){
+          case 'Tick':
+            // add the tick to the stack
+            nodes[node].prevTick = performance.now()
+            this.ticks.push(nodes[node])
+            break;
+          default:
+            console.log('Node Unrecognised')
+            break;
+        }
+      }
     }
   }
 
@@ -61,7 +68,7 @@ class Ticks {
       // check to see if it is time to triger the node
       if (timePassed > interval){
         // process the nodes for this tick
-        this.processTickNodes(i)
+        this.processTickNode(i)
         // set prevTick to now ready for the next time around.
         this.ticks[i].prevTick = now
       }
@@ -69,15 +76,18 @@ class Ticks {
   }
 
   /**
-   * processTickNodes - loop through and action all child nodes
+   * processTickNode - loop through and action all child nodes
    *
    * @param  {type} index description
    * @return {type}       description
    */
-  processTickNodes (index) {
-    console.log(index + ': TICK')
-    this.arduino.toggleLED(10)
-    this.arduino.updateLEDs()
+  processTickNode (index) {
+
+    console.log(this.ticks[index])
+
+    //console.log(index + ': TICK')
+    //this.arduino.toggleLED(10)
+    //this.arduino.updateLEDs()
   }
 
   /**
@@ -103,4 +113,4 @@ class Ticks {
   }
 }
 
-export default Ticks
+export default SyntaxTree

@@ -28,47 +28,24 @@ export default {
 
     // Listen for the i-got-clicked event and its payload.
     EventBus.$on('VisualEditorChange', payload => {
-      this.processSyntaxTree(payload.nodes)
+      // process tree
+      simulation.syntaxTree.processSyntaxTree(payload.nodes)
+      console.log(payload.nodes)
     })
   },
   methods: {
 
-    /**
-     * processSyntaxTree - fired by the EventBus. Process the changes to the
-     * syntax tree.
-     *
-     * @param  {object} nodes list of objects that represent nodes
-     */
-    processSyntaxTree: function (nodes) {
-
-      // loop through each node
-      for (let node in nodes) {
-        if (nodes.hasOwnProperty(node)) {
-
-          // get node type so that we can process it
-          let type = nodes[node].title
-
-          switch(type){
-            case 'Tick':
-              // add the tick to the stack
-              simulation.ticks.processTick(nodes[node])
-              break;
-            default:
-              console.log('Node Unrecognised')
-              break;
-          }
-        }
-      }
-    },
     loop: function (timestamp) {
-      simulation.ticks.update(timestamp)
+      simulation.syntaxTree.update(timestamp)
       if (this.isPlaying) window.requestAnimationFrame(this.loop)
     },
+
     playSimulation: function () {
       console.log('PLAY')
       this.isPlaying = true
       window.requestAnimationFrame(this.loop)
     },
+
     stopSimulation: function () {
       console.log('STOP')
       this.isPlaying = false

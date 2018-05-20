@@ -14,7 +14,7 @@ let OrbitControls = OC(THREE)
 
 import * as SubdivisionModifier from 'three-subdivision-modifier'
 import Arduino from './Arduino.js'
-import Ticks from './Ticks.js'
+import SyntaxTree from './SyntaxTree.js'
 
 const HIGH  = 1
 const LOW   = 0
@@ -40,7 +40,7 @@ class Simulation {
   constructor(window, document) {
     'use strict'
 
-    this.ticks
+    this.syntaxTree
 
     this.container // the elm that the three env is appended to
     this.containerWidth
@@ -115,7 +115,7 @@ class Simulation {
     // add the objects to the scene
     this.addGeometry()
     this.arduino = new Arduino(this.scene, this.camera, this.anemoneRad)
-    this.ticks = new Ticks(this.arduino)
+    this.syntaxTree = new SyntaxTree(this.arduino)
 
     // add all event listeners
     this.addOnControlsChange()

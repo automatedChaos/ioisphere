@@ -9,7 +9,6 @@
 */
 import * as THREE from 'three'
 import ToggleSwitch from './ToggleSwitch.js'
-import Ticks from '../ThreeJS/Ticks.js'
 
 const LOW = false;
 const HIGH = true;
@@ -207,13 +206,15 @@ class Arduino {
    */
   toggleLED (index) {
 
-    console.log(this._LEDStates)
+    // get char in question
     let charInFocus = this._LEDStates.charAt(index)
 
+    // flip it
     let newChar = (charInFocus === '0' ? '1' : '0')
 
+    // set char in question to new value
     this._LEDStates = this.replaceAt(this._LEDStates, index, newChar)
-    //console.log(this._LEDStates)
+
   }
 
   /**
