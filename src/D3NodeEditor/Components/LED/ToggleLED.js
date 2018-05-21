@@ -14,12 +14,18 @@ function toggleLED(){
 
   return new D3NE.Component("ToggleLED", {
     builder(node) {
+
       var processIn = new D3NE.Input("In", anySocket)
       var processOut = new D3NE.Output("Out", anySocket)
 
-      var numControl = new D3NE.Control(
-        '<input type="number" placeholder="LED Number">'
-      );
+      let numTemplate = '<input type="number" placeholder="LED Number">'
+      let numControl = new D3NE.Control(numTemplate, (element, control) => {
+        control.putData('LEDNum', '0')
+        element.value = '0'
+        element.addEventListener('change',()=>{
+          control.putData('LEDNum', element.value) // put data in the node under the key "num"
+        });
+      });
 
       return node
       .addInput(processIn)

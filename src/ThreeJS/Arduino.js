@@ -13,6 +13,19 @@ import ToggleSwitch from './ToggleSwitch.js'
 const LOW = false;
 const HIGH = true;
 
+String.prototype.replaceAt=function(index, replacement) {
+
+  let endString = this.substr(index + replacement.length, this.length - 1)
+
+  let startString = this.substr(0, index)
+
+  //let newString = startString + replacement + endString
+
+  debugger
+
+  return this
+}
+
 // Singleton
 class Arduino {
 
@@ -174,11 +187,11 @@ class Arduino {
  *
  * @param  {string} 0s & 1s
  */
-  updateLEDs (bits = this._LEDStates) {
+  updateLEDs () {
 
-    for (var i = 0, l = bits.length; i < l; i+= 1){
+    for (var i = 0, l = this._LEDStates.length; i < l; i+= 1){
 
-      if (bits.charAt(i) === '1'){
+      if (this._LEDStates[i] === '1'){
         this._toggleSwitches[i].digitalWrite(HIGH)
       }else{
         this._toggleSwitches[i].digitalWrite(LOW)
@@ -192,9 +205,9 @@ class Arduino {
    * @return {Array}  zeros
    */
   clear (numLEDs) {
-    var zeros = ''
+    var zeros = []
     for (let i = 0; i < numLEDs; i++ ){
-      zeros+=(0)
+      zeros.push('0')
     }
     return zeros
   }
@@ -207,14 +220,9 @@ class Arduino {
   toggleLED (index) {
 
     // get char in question
-    let charInFocus = this._LEDStates.charAt(index)
+    let charInFocus = this._LEDStates[index]
 
-    // flip it
-    let newChar = (charInFocus === '0' ? '1' : '0')
-
-    // set char in question to new value
-    this._LEDStates = this.replaceAt(this._LEDStates, index, newChar)
-
+    this._LEDStates[index] = (charInFocus === '0' ? '1' : '0')
   }
 
   /**
@@ -225,10 +233,10 @@ class Arduino {
    */
   randomStates (numLEDs) {
     // generate some random test data
-    var randomStates = ''
+    var randomStates = []
     for (let i = 0; i < numLEDs; i++){
       let newState = Math.random() < 0.95 ? 0 : 1
-      randomStates+= newState
+      randomStates.push(newState)
     }
 
     return randomStates
@@ -246,18 +254,6 @@ class Arduino {
       total += switchNumbers[i]
     }
     return total
-  }
-
-  /**
-   * replaceAt - replaces char at specif index
-   *
-   * @param  {String} string      the phrase in question
-   * @param  {Number} index       - of char to be replaced
-   * @param  {Char} replacement   - the char to be inserted
-   * @return {String}             the new phrase
-   */
-  replaceAt(string, index, replacement) {
-    return string.substr(0, index) + replacement+ string.substr(index + replacement.length);
   }
 }
 

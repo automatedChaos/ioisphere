@@ -37,6 +37,7 @@ export default {
 
     loop: function (timestamp) {
       simulation.syntaxTree.update(timestamp)
+      simulation.arduino.updateLEDs() // always the last call on loop
       if (this.isPlaying) window.requestAnimationFrame(this.loop)
     },
 

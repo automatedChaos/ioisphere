@@ -68,7 +68,7 @@ class SyntaxTree {
       // check to see if it is time to triger the node
       if (timePassed > interval){
         // process the nodes for this tick
-        this.processTickNode(i)
+        this.processTick(i)
         // set prevTick to now ready for the next time around.
         this.ticks[i].prevTick = now
       }
@@ -81,16 +81,61 @@ class SyntaxTree {
    * @param  {type} index description
    * @return {type}       description
    */
-  processTickNode (index) {
+  processTick (index) {
 
-    let next = this.ticks[index].outputs[0].connections[0]
+    // get the out connections
+    let connections = this.ticks[index].outputs[0].connections
 
-    console.log(this.nodes[next.node])
-    //console.log(this.ticks[index].outputs[0].connections.length)
+    //stop process if there is nothing to do
+    if (!connections) return false
 
-    //console.log(index + ': TICK')
-    //this.arduino.toggleLED(10)
-    //this.arduino.updateLEDs()
+    // get the first connection on this chain
+    let node = this.nodes[connections[0].node]
+
+    // begin a recursive process
+    this.processNode(node)
+  }
+
+  processNode (node) {
+
+    // run the script using the type
+    this.executeCommand(node)
+
+    // check if we have another node connected
+    if (!node.outputs[0].connections[0]) return false
+
+    // get nextNode ID
+    let nextNodeID = node.outputs[0].connections[0].node
+    if (!nextNodeID) return false
+
+    // get the next node
+    let nextNode = this.nodes[nextNodeID]
+
+    // process the next node
+    this.processNode(nextNode)
+  }
+
+
+  /**
+   * executeCommand - check the node type and execute the expected behavior
+   *
+   * @return {type}  description
+   */
+  executeCommand (node) {
+
+    if (node){
+      let type = node.title
+
+      switch(type){
+        case 'ToggleLED':
+          // console.log(node.data.LEDNum)
+          this.arduino.toggleLED(node.data.LEDNum)
+          break
+        default:
+          break
+      }
+    }
+
   }
 
   /**
