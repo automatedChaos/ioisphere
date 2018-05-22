@@ -10,13 +10,14 @@ import anySocket from '../Socket/Any.js'
 *
 * @return {Coponent Object}
 */
-function toggleLED(){
+function Add(){
 
-  return new D3NE.Component("ToggleLED", {
+  return new D3NE.Component("Add", {
     builder(node) {
 
       var processIn = new D3NE.Input("In", anySocket)
       var processOut = new D3NE.Output("Out", anySocket)
+
 
       let numTemplate = '<input type="number" placeholder="LED Number">'
       let numControl = new D3NE.Control(numTemplate, (element, control) => {
@@ -26,6 +27,7 @@ function toggleLED(){
           control.putData('LEDNum', element.value) // put data in the node under the key "num"
         });
       });
+
 
       return node
       .addInput(processIn)
@@ -38,4 +40,4 @@ function toggleLED(){
   });
 }
 
-export default toggleLED
+export default Number

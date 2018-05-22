@@ -13,6 +13,7 @@ class SyntaxTree {
     this.arduino = a
     this.nodes = null
     this.ticks = []
+    this.onPlays = []
     this.switchControls = null
   }
 
@@ -38,6 +39,9 @@ class SyntaxTree {
         let type = nodes[node].title
 
         switch(type){
+          case 'onPlay':
+            this.onPlays.push(nodes[node])
+            break;
           case 'Tick':
             // add the tick to the stack
             nodes[node].prevTick = performance.now()
@@ -51,6 +55,19 @@ class SyntaxTree {
     }
   }
 
+  /**
+   * setup - description
+   *
+   * @return {type}  description
+   */
+  setup () {
+    // loop through all the ticks and set previous tick to now
+    for (let i = 0, l = this.onPlays.length; i < l; i+= 1){
+
+      // process node
+      this.processNode(this.onPlays[i])
+    }
+  }
 
   /**
    * update - called every requestAnimationFrame and used trigger ticks
@@ -127,10 +144,13 @@ class SyntaxTree {
       let type = node.title
 
       switch(type){
-        case 'ToggleLED':
+        case 'LED Toggle':
           // console.log(node.data.LEDNum)
           this.arduino.toggleLED(node.data.LEDNum)
           break
+        case 'LED Write':
+          this.arduino.ledWrite(node.data.LEDNum, node.data.LEDState)
+          break;
         default:
           break
       }

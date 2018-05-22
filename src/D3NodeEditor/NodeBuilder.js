@@ -6,23 +6,31 @@
  */
 
 // TRIGGERS
+import onPlay from './Components/Trigger/onPlay.js'
 import tick from './Components/Trigger/Tick.js'
 
 // LED
-import toggleLED from './Components/LED/ToggleLED.js'
+import LEDToggle from './Components/LED/LEDToggle.js'
+import LEDWrite from './Components/LED/LEDWrite.js'
+
+// DataTypes
+import Number from './Components/DataTypes/Number.js'
 
 class NodeBuilder {
   constructor () {
 
     this.tick = tick()
+    this.onPlay = onPlay()
 
-    this.toggleLED = toggleLED()
+    this.LEDToggle = LEDToggle()
+    this.LEDWrite = LEDWrite()
+
+    this.number = Number()
 
     // TODO: Legacy ---- --- --- -- ---- -- -- -- ---
     this.anyTypeSocket = new D3NE.Socket('ny', 'Any type', 'hint')
     this.numSocket = new D3NE.Socket('number', 'Number value', 'hint')
     this.lessThan = this.createLessThanComponent()
-    this.number = this.createNumberComponent()
     this.add = this.createAddComponent()
 
     this.bool = this.createBoolComponent()
@@ -31,8 +39,6 @@ class NodeBuilder {
 
     this.compareBool = this.createCompareBoolComponent()
 
-    this.LEDWrite = this.createLEDWriteComponent()
-
     this.numSocket.combineWith(this.anyTypeSocket)
 
 
@@ -40,32 +46,29 @@ class NodeBuilder {
 
   componentList () {
     return [
-      this.lessThan,
-      this.number,
-      this.add,
+      this.onPlay,
       this.tick,
-      this.bool,
+
+      this.LEDToggle,
       this.LEDWrite,
-      this.compareBool,
-      this.toggleLED,
-      this.toggle
+
+      this.number
     ]
   }
 
   menu () {
     return new D3NE.ContextMenu({
-     Values: {
-        Tick: this.tick,
-        ['Toggle LED']: this.toggleLED,
-        Value: this.number,
-        LEDWrite: this.LEDWrite,
-        ['Compare Bool']: this.compareBool,
-        ['Toggle Bool']: this.toggle,
-        Action: function() {
-           alert("ok")
-        }
-     },
-     Add: this.add
+     Triggers: {
+        ['On Play']: this.onPlay,
+        ['Tick']: this.tick,
+      },
+      LEDs: {
+        ['LED Toggle']: this.LEDToggle,
+        ['LED Write']: this.LEDWrite,
+      },
+      Data: {
+        ['Number']: this.number
+      }
     });
   }
 
@@ -95,42 +98,7 @@ class NodeBuilder {
     });
   }
 
-  /**
-   * createNumberComponent - creates the comonent for a number
-   *
-   * @return {Coponent Object}
-   */
-  createNumberComponent () {
-    let self = this
-    return new D3NE.Component("Number", {
-      builder(node) {
-      var out1 = new D3NE.Output("Number", self.numSocket)
-      var numControl = new D3NE.Control('<input type="number">',
-      (el, c) => {
-      el.value = c.getData('num') || 1
 
-      function upd() {
-      c.putData("num", parseFloat(el.value));
-      }
-
-      el.addEventListener("input", ()=>{
-      upd();
-      editor.eventListener.trigger("change")
-      });
-      el.addEventListener("mousedown", function(e){e.stopPropagation()})// prevent node movement when selecting text in the input field
-      upd()
-      }
-      );
-
-      return node.addControl(numControl).addOutput(out1);
-      },
-      worker(node, inputs, outputs) {
-      outputs[0] = node.data.num
-      }
-      });
-
-
-  }
 
   /**
    * createAddComponent - creates the comonent for a number

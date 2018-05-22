@@ -43,6 +43,7 @@ export default {
 
     playSimulation: function () {
       console.log('PLAY')
+      simulation.syntaxTree.setup()
       this.isPlaying = true
       window.requestAnimationFrame(this.loop)
     },

@@ -68,12 +68,15 @@ class Arduino {
    * @param  {stateBool} a boolean that is mapped to zero or one
    */
   ledWrite (ledNumber, stateBool) {
+
+    //debugger
+
     if (ledNumber < this._LEDStates.length) {
       // convert true of false to one or zero repectively
-      let stateValue = (stateBool ? 1 : 0)
-
-      // update state string with the new state spliced in
-      this._LEDStates = `${this._LEDStates.substr(0, ledNumber)}${stateValue}${this._LEDStates.substr(ledNumber + 1)}`
+      let stateValue = (stateBool === 'true' ? '1' : '0')
+      this._LEDStates[ledNumber] = stateValue
+      // update state string with the new state spliced in legacy from string 0 and 1s
+      // this._LEDStates = `${this._LEDStates.substr(0, ledNumber)}${stateValue}${this._LEDStates.substr(ledNumber + 1)}`
     }else{
       console.log('ledNumber is out of range')
     }
