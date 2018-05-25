@@ -33,10 +33,11 @@ class ToggleSwitch {
     this._sphere._onStateMaterial = this._onStateMaterial
     this._sphere._offStateMaterial = this._offStateMaterial
 
+    this._sphere.index = 5
+
     // add the mesh to the scene
     this._parent.add( this._sphere )
 
-  
   }
 
   digitalWrite (state) {
@@ -46,6 +47,10 @@ class ToggleSwitch {
     }else{
       this._sphere.material =  this._offStateMaterial
     }
+  }
+
+  setIndex (i){
+    this._sphere.index = i
   }
 }
 

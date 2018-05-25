@@ -13,6 +13,9 @@ import tick from './Components/Trigger/Tick.js'
 import LEDToggle from './Components/LED/LEDToggle.js'
 import LEDWrite from './Components/LED/LEDWrite.js'
 
+// Modifier
+import AddOne from './Components/Modifier/AddOne.js'
+
 // DataTypes
 import Number from './Components/DataTypes/Number.js'
 
@@ -24,6 +27,8 @@ class NodeBuilder {
 
     this.LEDToggle = LEDToggle()
     this.LEDWrite = LEDWrite()
+
+    this.AddOne = AddOne()
 
     this.number = Number()
 
@@ -52,6 +57,8 @@ class NodeBuilder {
       this.LEDToggle,
       this.LEDWrite,
 
+      this.AddOne,
+
       this.number
     ]
   }
@@ -65,6 +72,9 @@ class NodeBuilder {
       LEDs: {
         ['LED Toggle']: this.LEDToggle,
         ['LED Write']: this.LEDWrite,
+      },
+      Modifier: {
+        ['Add One']: this.AddOne
       },
       Data: {
         ['Number']: this.number

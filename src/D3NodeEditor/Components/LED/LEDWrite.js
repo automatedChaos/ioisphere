@@ -18,11 +18,15 @@ function LEDWrite(){
       var processIn = new D3NE.Input("In", anySocket)
       var processOut = new D3NE.Output("Out", anySocket)
 
-      var numberIn = new D3NE.Input("Number in", anySocket)
+      var numberIn = new D3NE.Input("Modifier", anySocket)
 
       let numTemplate = '<input type="number" placeholder="LED Number">'
       let numControl = new D3NE.Control(numTemplate, (element, control) => {
-        control.putData('LEDNum', '0')
+        control.putData('LEDNum', '0'),
+        control.setValue = val => {
+          element.value = val
+          control.putData('LEDNum', val)
+        },
         element.value = '0'
         element.addEventListener('change',()=>{
           control.putData('LEDNum', element.value) // put data in the node under the key "num"

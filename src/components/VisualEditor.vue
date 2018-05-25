@@ -24,7 +24,7 @@ export default {
 
 
     this.container = document.getElementById('nodeEditor')
-    this.editor = new D3NE.NodeEditor('demo@0.1.0', this.container, this.nodeBuilder.componentList(), this.nodeBuilder.menu())
+    this.$editor.instance = new D3NE.NodeEditor('demo@0.1.0', this.container, this.nodeBuilder.componentList(), this.nodeBuilder.menu())
 
     /*
     // var nn = componentNum.newNode();
@@ -59,24 +59,23 @@ export default {
 
     this.engine = new D3NE.Engine('demo@0.1.0', this.nodeBuilder.componentList())
 
-    this.editor.eventListener.on('change', (_, persistent) => {
+    this.$editor.instance.eventListener.on('change', (_, persistent) => {
       // trigger after each of the first six events
       // console.log(EventBus)
       // console.log(self.editor.toJSON())
 
-      EventBus.$emit('VisualEditorChange', self.editor.toJSON())
+      EventBus.$emit('VisualEditorChange', self.$editor.instance.toJSON())
    })
 
-    this.editor.view.zoomAt(this.editor.nodes)
-    this.editor.eventListener.trigger("change")
-    this.editor.view.resize()
+    this.$editor.instance.view.zoomAt(this.$editor.instance.nodes)
+    this.$editor.instance.eventListener.trigger("change")
+    this.$editor.instance.view.resize()
 
   },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
       nodeBuilder: new NodeBuilder(),
-      editor: null,
       container: null,
       engine: null
     }

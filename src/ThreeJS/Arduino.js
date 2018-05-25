@@ -179,6 +179,9 @@ class Arduino {
 
     var ts = new ToggleSwitch(this._meshGroup, geometry, x, y, z, onStateMaterial, offStateMaterial)
 
+    // set the index so that we can detect clicks on specific switches later
+    ts.setIndex(this._toggleSwitches.length)
+
     // add the switch to the main array
     this._toggleSwitches.push( ts )
     this._toggleSwitcheLocations.push([x , y, z])

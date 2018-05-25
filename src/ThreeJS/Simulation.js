@@ -120,6 +120,7 @@ class Simulation {
     // add all event listeners
     this.addOnControlsChange()
     this.addOnMouseClick()
+    this.addOnMouseMove()
     this.addOnWindowResize()
   }
 
@@ -132,6 +133,7 @@ class Simulation {
       // add sphere
       this.mainSphereGeometry = new THREE.SphereGeometry( this.anemoneRad, 32, 32 );
       this.mainSphere = new THREE.Mesh( this.mainSphereGeometry, this.sphere );
+      this.mainSphere.name = 'iOiSphere'
       this.scene.add( this.mainSphere );
       this.mainSphere.position.x = 0;
       this.mainSphere.position.z = 0;
@@ -177,6 +179,14 @@ class Simulation {
   }
 
 
+  addOnMouseMove () {
+    let onMouseMove = (event) => {
+      //console.log(event.clientX + ' ' + event.clientY)
+
+    }
+    window.addEventListener( 'mousemove', onMouseMove, false )
+  }
+
   /**
    * addOnMouseClick - handle the click events. Mainly used for toggling the switches
    *
@@ -186,26 +196,32 @@ class Simulation {
 
     let onMouseClick = (event) => {
 
-      console.log('asdfasfdsdfs')
+      var containerBounds = this.container.getBoundingClientRect();
+
       // calculate mouse position in normalized device coordinates
       // (-1 to +1) for both components
-
-      this.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-      this.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+      this.mouse.x = ( (event.clientX - containerBounds.left) / this.containerWidth) * 2 - 1
+      this.mouse.y = - ( (event.clientY - containerBounds.top) / this.containerHeight) * 2 + 1
 
       // update the picking ray with the camera and mouse position
-      this.raycaster.setFromCamera( this.mouse, this.camera );
+      this.raycaster.setFromCamera(this.mouse, this.camera )
 
       // calculate objects intersecting the picking ray
 
-      var intersects = this.raycaster.intersectObjects( this.arduino._meshGroup.children );
+      var intersects = this.raycaster.intersectObjects( this.arduino._meshGroup.children ) //  )
+
+      console.log(intersects.length)
 
       // only interact with the first intersect
-      if (intersects.length > 0)	intersects[ 0 ].object.material.color.set( 0xff0000 );
+      if (intersects.length > 0) {
+        this.arduino.activateToggle(intersects[ 0 ].object.index)
 
+        // Used for testing purposes
+        //intersects[ 0 ].object.material.color.set( 0xff0000 )
+      }
     }
 
-    this.container.addEventListener( 'click', onMouseClick, false );
+    this.container.addEventListener( 'click', onMouseClick, false )
 
   }
 

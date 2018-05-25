@@ -7,6 +7,7 @@
  * @Last modified by:   alcwynparker
  * @Last modified time: 2018-04-24T23:22:03+01:00
 */
+import Vue from 'vue'
 
 class SyntaxTree {
   constructor(a){
@@ -15,6 +16,8 @@ class SyntaxTree {
     this.ticks = []
     this.onPlays = []
     this.switchControls = null
+
+    this.v = new Vue() // used for gaining access to the editor - update UI
   }
 
   /**

@@ -42,7 +42,9 @@ export default {
     },
 
     playSimulation: function () {
-      console.log('PLAY')
+      let newValue = Number(this.$editor.instance.nodes.find(n => n.id == 1).data.LEDNum) + 1
+      //let originalValue = this.$editor.instance.nodes.find(n => n.id === 1).controls[0].getData().LEDNum
+      this.$editor.instance.nodes.find(n => n.id === 1).controls[0].setValue(newValue)
       simulation.syntaxTree.setup()
       this.isPlaying = true
       window.requestAnimationFrame(this.loop)

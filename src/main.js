@@ -17,6 +17,8 @@ import './assets/sass/ioi.scss'
 Vue.config.productionTip = false
 Vue.use(VueSplit)
 
+Vue.prototype.$editor = {instance: null}
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
