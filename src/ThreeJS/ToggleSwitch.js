@@ -24,7 +24,7 @@ class ToggleSwitch {
     this._offStateMaterial = offStateMaterial
 
     this._sphere = new THREE.Mesh( this._geom, this._offStateMaterial )
-
+    this._led = null
     // Position
     this._sphere.position.x = this._x
     this._sphere.position.y = this._y
@@ -40,12 +40,25 @@ class ToggleSwitch {
 
   }
 
+  setLED(LEDPos){
+
+    var g = new THREE.SphereGeometry( 7, 32, 32 )
+
+    this._led = new THREE.Mesh( g, this._onStateMaterial )
+    this._led.index = this._sphere.index
+    this._led.position.x = LEDPos.x
+    this._led.position.y = LEDPos.y
+    this._led.position.z = LEDPos.z
+
+    this._parent.add( this._led )
+  }
+
   digitalWrite (state) {
 
     if (state){
-      this._sphere.material = this._onStateMaterial
+      this._led.material = this._onStateMaterial
     }else{
-      this._sphere.material =  this._offStateMaterial
+      this._led.material =  this._offStateMaterial
     }
   }
 

@@ -37,14 +37,20 @@ export default {
 
     loop: function (timestamp) {
       simulation.syntaxTree.update(timestamp)
-      simulation.arduino.updateLEDs() // always the last call on loop
-      if (this.isPlaying) window.requestAnimationFrame(this.loop)
+
+      for (let i = 0; i < 100; i++){
+        if (simulation.arduino.checkSwitch(i)) console.log('switch ' + i + ' is active')
+      }
+
+      simulation.arduino.updateLEDs() // always the second to last call on loop
+      simulation.arduino.clearSwitchStates() // always the last call on the loop
+      if (this.isPlaying) window.requestAnimationFrame(this.loop) // chec whether to carry on
     },
 
     playSimulation: function () {
-      let newValue = Number(this.$editor.instance.nodes.find(n => n.id == 1).data.LEDNum) + 1
+      //let newValue = Number(this.$editor.instance.nodes.find(n => n.id == 1).data.LEDNum) + 1
       //let originalValue = this.$editor.instance.nodes.find(n => n.id === 1).controls[0].getData().LEDNum
-      this.$editor.instance.nodes.find(n => n.id === 1).controls[0].setValue(newValue)
+      //this.$editor.instance.nodes.find(n => n.id === 1).controls[0].setValue(newValue)
       simulation.syntaxTree.setup()
       this.isPlaying = true
       window.requestAnimationFrame(this.loop)

@@ -210,14 +210,13 @@ class Simulation {
 
       var intersects = this.raycaster.intersectObjects( this.arduino._meshGroup.children ) //  )
 
-      console.log(intersects.length)
-
       // only interact with the first intersect
       if (intersects.length > 0) {
-        this.arduino.activateToggle(intersects[ 0 ].object.index)
+        this.arduino.activateSwitch(intersects[ 0 ].object.index)
+        console.log(intersects[ 0 ].object.index)
 
         // Used for testing purposes
-        //intersects[ 0 ].object.material.color.set( 0xff0000 )
+        // intersects[ 0 ].object.material.color.set( 0xff0000 )
       }
     }
 

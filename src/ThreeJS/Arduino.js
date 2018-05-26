@@ -49,6 +49,7 @@ class Arduino {
     this.addToggleSwitches(this.switchNumbers)
 
     this._LEDStates = this.clear(this.LEDTotal)
+    this._switchStates = this.clear(this.LEDTotal)
 
     // TEST: turn last one on
     //  this.ledWriteScript(192, true)
@@ -80,6 +81,26 @@ class Arduino {
     }else{
       console.log('ledNumber is out of range')
     }
+  }
+
+  /**
+   * ledRead - reads a switch state and returns a true of false
+   *
+   * @param  {type} i index of switch to be read
+   * @return {type}   true of false depending on switch state
+   */
+  checkSwitch (i) {
+    return (this._switchStates[i] === '1') ? true : false
+  }
+
+  /**
+   * activateSwitch - trigger a single switch to be active
+   *
+   * @param  {type} i index ofswitch
+   */
+  activateSwitch (i) {
+    this._switchStates[i] = '1'
+
   }
 
   ledWriteScript(ledNumber, stateBool){
@@ -170,6 +191,11 @@ class Arduino {
     var y = rad * Math.sin(polar) * Math.sin(alpha)
     var z = rad * Math.cos(polar);
 
+    let LED = {x: (rad + 6) * Math.sin(polar) * Math.cos(alpha),
+               y: (rad + 6) * Math.sin(polar) * Math.sin(alpha),
+               z: (rad + 6) * Math.cos(polar)
+              }
+
     // Materials
     var onStateMaterial   = new THREE.MeshBasicMaterial( { color:0xef4224, wireframe: false } )
     var offStateMaterial  = new THREE.MeshBasicMaterial( { color:0x877c78, wireframe: false } )
@@ -181,6 +207,7 @@ class Arduino {
 
     // set the index so that we can detect clicks on specific switches later
     ts.setIndex(this._toggleSwitches.length)
+    ts.setLED(LED)
 
     // add the switch to the main array
     this._toggleSwitches.push( ts )
@@ -203,6 +230,17 @@ class Arduino {
         this._toggleSwitches[i].digitalWrite(LOW)
       }
     }
+  }
+
+
+  /**
+   * clearSwitchStates - must be called at the end of every frame
+   *
+   * @return {type}  description
+   */
+  clearSwitchStates () {
+    console.log('CLEAR')
+    this._switchStates = this.clear(this.LEDTotal)
   }
 
   /**
@@ -260,6 +298,10 @@ class Arduino {
       total += switchNumbers[i]
     }
     return total
+  }
+
+  activateToggle (toggleNumber){
+
   }
 }
 
