@@ -24,7 +24,7 @@ function AddOne(){
         control.putData('max', '192'),
         element.childNodes[1].value = '192'
         element.addEventListener('change',()=>{
-          control.putData('max', element.value) // put data in the node under the key "num"
+          control.putData('max', element.childNodes[1].value) // put data in the node under the key "num"
         });
       });
 
@@ -33,7 +33,7 @@ function AddOne(){
         control.putData('start', '0'),
         element.childNodes[1].value = '0'
         element.addEventListener('change',()=>{
-          control.putData('start', element.value) // put data in the node under the key "num"
+          control.putData('start', element.childNodes[1].value) // put data in the node under the key "num"
         });
       });
 

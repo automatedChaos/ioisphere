@@ -154,23 +154,10 @@ class SyntaxTree {
           this.arduino.ledWrite(node.data.LEDNum, node.data.LEDState)
           break;
         case 'Add One':
-          if (node.inputs[1].connections[0]){
-            // get the id of the number node - connected through the second input
-            let numberNode = node.inputs[1].connections[0].node
-            console.log(this.vue.$editor.instance.nodes.find(n => n.id == numberNode))
-            // update the data and UI
-            let newValue = Number(this.vue.$editor.instance.nodes.find(n => n.id == numberNode).data.num) + 1
-            //let originalValue = this.vue.$editor.instance.nodes.find(n => n.id === numberNode).controls[1].getData().num
-            this.vue.$editor.instance.nodes.find(n => n.id === numberNode).controls[1].setValue(newValue)
-            // Trigger on change event
-            this.vue.$editor.instance.eventListener.trigger("change")
-          }
-
-
-
+          console.log(node)
+          this.exAddOne(node)
           break;
         default:
-
           break
       }
     }
@@ -196,6 +183,32 @@ class SyntaxTree {
     // loop through all the ticks and set previous tick to now
     for (let i = 0, l = this.ticks.length; i < l; i+= 1){
       //this.ticks[i].prevTick = now;
+    }
+  }
+
+
+  /**
+   * addOne - it is in the name!
+   *
+   * @param  {type} node object for addOne
+   */
+  exAddOne (node) {
+    if (node.inputs[1].connections[0]){
+      // get the id of the number node - connected through the second input
+      let numberNode = node.inputs[1].connections[0].node
+
+      // update the data and UI
+      let newValue = Number(this.vue.$editor.instance.nodes.find(n => n.id == numberNode).data.num) + 1
+
+      console.log(node)
+      // check we are in the range
+      if (newValue > node.data.max) newValue = node.data.start
+
+      //let originalValue = this.vue.$editor.instance.nodes.find(n => n.id === numberNode).controls[1].getData().num
+      this.vue.$editor.instance.nodes.find(n => n.id === numberNode).controls[1].setValue(newValue)
+
+      // Trigger on change event
+      this.vue.$editor.instance.eventListener.trigger("change")
     }
   }
 }
