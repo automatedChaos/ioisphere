@@ -15,26 +15,38 @@ function Number(){
   return new D3NE.Component("Number", {
     builder(node) {
 
-      var processIn = new D3NE.Input("In", anySocket)
       var processOut = new D3NE.Output("Out", anySocket)
+
+      let nameTemplate = '<input type="text" placeholder="Unique name">'
+      let nameControl = new D3NE.Control(nameTemplate, (element, control) => {
+        control.putData('name', '')
+        element.value = ''
+        element.addEventListener('change',()=>{
+          control.putData('name', element.value) // put data in the node under the key "num"
+        });
+      });
 
 
       let numTemplate = '<input type="number" placeholder="LED Number">'
       let numControl = new D3NE.Control(numTemplate, (element, control) => {
-        control.putData('LEDNum', '0')
+        control.putData('num', '0')
+        control.setValue = val => {
+          element.value = val
+          control.putData('num', val)
+        }
         element.value = '0'
         element.addEventListener('change',()=>{
-          control.putData('LEDNum', element.value) // put data in the node under the key "num"
+          control.putData('num', element.value) // put data in the node under the key "num"
         });
       });
 
       return node
-      .addInput(processIn)
       .addOutput(processOut)
+      .addControl(nameControl)
       .addControl(numControl)
     },
     worker(node, inputs, outputs) {
-
+      outputs[0] = node.data.num
     }
   });
 }

@@ -22,50 +22,24 @@ export default {
   mounted: function () {
     let self = this
 
-
     this.container = document.getElementById('nodeEditor')
     this.$editor.instance = new D3NE.NodeEditor('demo@0.1.0', this.container, this.nodeBuilder.componentList(), this.nodeBuilder.menu())
 
-    /*
-    // var nn = componentNum.newNode();
-    // nn.data.num = 2;
-    var n1 = this.nodeBuilder.number.builder(this.nodeBuilder.number.newNode())
-    var n2 = this.nodeBuilder.number.builder(this.nodeBuilder.number.newNode())
-    var add = this.nodeBuilder.add.builder(this.nodeBuilder.add.newNode())
-    var num = this.nodeBuilder.number.builder(this.nodeBuilder.number.newNode())
-
-    var loop = this.nodeBuilder.loop.builder(this.nodeBuilder.loop.newNode())
-    var bool = this.nodeBuilder.bool.builder(this.nodeBuilder.bool.newNode())
-
-    n1.position = [80, 200]
-    n2.position = [80, 400]
-    add.position = [500, 240]
-    num.position = [600, 300]
-    loop.position = [200, 200]
-    bool.position = [10, 10]
-
-    this.editor.connect(n1.outputs[0], add.inputs[0])
-    this.editor.connect(n2.outputs[0], add.inputs[1])
-
-    this.editor.addNode(n1)
-    this.editor.addNode(n2)
-    this.editor.addNode(add)
-    this.editor.addNode(num)
-    this.editor.addNode(loop)
-    this.editor.addNode(bool)
-    */
-
-    // editor.selectNode(tnode);
-
     this.engine = new D3NE.Engine('demo@0.1.0', this.nodeBuilder.componentList())
+
+    this.$editor.instance.eventListener.on('change', async () => {
+      console.log('processing')
+      await self.engine.abort();
+      await self.engine.process(self.$editor.instance.toJSON());
+    });
 
     this.$editor.instance.eventListener.on('change', (_, persistent) => {
       // trigger after each of the first six events
       // console.log(EventBus)
       // console.log(self.editor.toJSON())
-
+      this.engine.process(self.$editor.instance.toJSON());
       EventBus.$emit('VisualEditorChange', self.$editor.instance.toJSON())
-   })
+    })
 
     this.$editor.instance.view.zoomAt(this.$editor.instance.nodes)
     this.$editor.instance.eventListener.trigger("change")

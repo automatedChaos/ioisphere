@@ -76,7 +76,7 @@ class NodeBuilder {
       Modifier: {
         ['Add One']: this.AddOne
       },
-      Data: {
+      Variables: {
         ['Number']: this.number
       }
     });

@@ -239,7 +239,6 @@ class Arduino {
    * @return {type}  description
    */
   clearSwitchStates () {
-    console.log('CLEAR')
     this._switchStates = this.clear(this.LEDTotal)
   }
 

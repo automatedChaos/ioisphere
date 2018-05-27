@@ -17,7 +17,7 @@ class SyntaxTree {
     this.onPlays = []
     this.switchControls = null
 
-    this.v = new Vue() // used for gaining access to the editor - update UI
+    this.vue = new Vue() // used for gaining access to the editor - update UI
   }
 
   /**
@@ -40,7 +40,7 @@ class SyntaxTree {
 
         // get node type so that we can process it
         let type = nodes[node].title
-
+        console.log(type)
         switch(type){
           case 'onPlay':
             this.onPlays.push(nodes[node])
@@ -51,7 +51,7 @@ class SyntaxTree {
             this.ticks.push(nodes[node])
             break;
           default:
-            console.log('Node Unrecognised')
+            // console.log('Node Unrecognised')
             break;
         }
       }
@@ -135,7 +135,6 @@ class SyntaxTree {
     this.processNode(nextNode)
   }
 
-
   /**
    * executeCommand - check the node type and execute the expected behavior
    *
@@ -154,7 +153,24 @@ class SyntaxTree {
         case 'LED Write':
           this.arduino.ledWrite(node.data.LEDNum, node.data.LEDState)
           break;
+        case 'Add One':
+          if (node.inputs[1].connections[0]){
+            // get the id of the number node - connected through the second input
+            let numberNode = node.inputs[1].connections[0].node
+            console.log(this.vue.$editor.instance.nodes.find(n => n.id == numberNode))
+            // update the data and UI
+            let newValue = Number(this.vue.$editor.instance.nodes.find(n => n.id == numberNode).data.num) + 1
+            //let originalValue = this.vue.$editor.instance.nodes.find(n => n.id === numberNode).controls[1].getData().num
+            this.vue.$editor.instance.nodes.find(n => n.id === numberNode).controls[1].setValue(newValue)
+            // Trigger on change event
+            this.vue.$editor.instance.eventListener.trigger("change")
+          }
+
+
+
+          break;
         default:
+
           break
       }
     }

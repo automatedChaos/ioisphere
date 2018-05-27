@@ -12,30 +12,34 @@ import anySocket from '../Socket/Any.js'
 */
 function AddOne(){
 
-  return new D3NE.Component("Add One", {
+  return new D3NE.Component('Add One', {
     builder(node) {
 
-      var processOut = new D3NE.Output("Out", anySocket)
+      var processIn = new D3NE.Input('In', anySocket)
+      var processOut = new D3NE.Output('Out', anySocket)
+      var numberIn = new D3NE.Input('Number', anySocket)
 
-      let maxTemplate = '<input type="number">'
+      let maxTemplate = '<div><label>MAX</label><input type="number"></div>'
       let maxControl = new D3NE.Control(maxTemplate, (element, control) => {
-        control.putData('max', '100'),
-        element.value = '100'
+        control.putData('max', '192'),
+        element.childNodes[1].value = '192'
         element.addEventListener('change',()=>{
           control.putData('max', element.value) // put data in the node under the key "num"
         });
       });
 
-      let startTemplate = '<input type="number" >'
+      let startTemplate = '<div><label>MIN</label><input type="number"></div>'
       let startControl = new D3NE.Control(startTemplate, (element, control) => {
         control.putData('start', '0'),
-        element.value = '0'
+        element.childNodes[1].value = '0'
         element.addEventListener('change',()=>{
           control.putData('start', element.value) // put data in the node under the key "num"
         });
       });
 
       return node
+      .addInput(processIn)
+      .addInput(numberIn)
       .addControl(startControl)
       .addControl(maxControl)
       .addOutput(processOut)

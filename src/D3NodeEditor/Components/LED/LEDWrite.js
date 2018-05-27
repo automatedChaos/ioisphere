@@ -5,6 +5,9 @@
  * @Last modified time: 2018-05-03T00:02:41+01:00
  */
 import anySocket from '../Socket/Any.js'
+import Vue from 'vue'
+let vue = new Vue()
+
 /**
 * toggleLED
 *
@@ -18,7 +21,7 @@ function LEDWrite(){
       var processIn = new D3NE.Input("In", anySocket)
       var processOut = new D3NE.Output("Out", anySocket)
 
-      var numberIn = new D3NE.Input("Modifier", anySocket)
+      var numberIn = new D3NE.Input("Number", anySocket)
 
       let numTemplate = '<input type="number" placeholder="LED Number">'
       let numControl = new D3NE.Control(numTemplate, (element, control) => {
@@ -54,7 +57,10 @@ function LEDWrite(){
       .addControl(stateControl)
     },
     worker(node, inputs, outputs) {
-
+      if (inputs[1][0]){
+        node.data.LEDNum = inputs[1][0]
+        vue.$editor.instance.nodes.find(n => n.id == node.id).controls[0].setValue(inputs[1][0])
+      }
     }
   });
 }
