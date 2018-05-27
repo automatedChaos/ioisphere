@@ -43,7 +43,7 @@ function LEDWrite(){
 
       let stateControl = new D3NE.Control(stateTemplate, (element, control) => {
         control.putData('LEDState', 'true')
-        element.value = 'false'
+        element.value = 'true'
         element.addEventListener('change',()=>{
           control.putData('LEDState', element.value) // put data in the node under the key "num"
         });

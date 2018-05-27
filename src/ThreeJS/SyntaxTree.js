@@ -151,6 +151,7 @@ class SyntaxTree {
           this.arduino.toggleLED(node.data.LEDNum)
           break
         case 'LED Write':
+          console.log(node.data.LEDState)
           this.arduino.ledWrite(node.data.LEDNum, node.data.LEDState)
           break;
         case 'Add One':
@@ -161,7 +162,6 @@ class SyntaxTree {
           break
       }
     }
-
   }
 
   /**
@@ -186,9 +186,8 @@ class SyntaxTree {
     }
   }
 
-
   /**
-   * addOne - it is in the name!
+   * exAddOne - executes the add one functionality
    *
    * @param  {type} node object for addOne
    */
@@ -200,7 +199,6 @@ class SyntaxTree {
       // update the data and UI
       let newValue = Number(this.vue.$editor.instance.nodes.find(n => n.id == numberNode).data.num) + 1
 
-      console.log(node)
       // check we are in the range
       if (newValue > node.data.max) newValue = node.data.start
 
