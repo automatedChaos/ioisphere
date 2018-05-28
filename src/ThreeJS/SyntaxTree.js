@@ -8,6 +8,7 @@
  * @Last modified time: 2018-04-24T23:22:03+01:00
 */
 import Vue from 'vue'
+import {Howl, Howler} from 'howler';
 
 class SyntaxTree {
   constructor(a){
@@ -164,6 +165,9 @@ class SyntaxTree {
           console.log(node.data.LEDState)
           this.arduino.ledWrite(node.data.LEDNum, node.data.LEDState)
           break;
+        case 'Sound':
+          this.exSound(node)
+          break;
         default:
           break
       }
@@ -261,12 +265,27 @@ class SyntaxTree {
     }
   }
 
+  exSound(node){
+    
+    let file = this.pad(node.data.sound, 3)
+    var sound = new Howl({
+      src: [require(`@/assets/audio/${file}.mp3`)]
+    })
+    sound.play();
+  }
+
   /**
  * Returns a random integer between min (inclusive) and max (inclusive)
  * Using Math.round() will give you a non-uniform distribution!
  */
   getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  pad(n, width, z) {
+    z = z || '0';
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
   }
 }
 

@@ -11,7 +11,6 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueSplit from 'vue-split-panel'
-import Howler from 'howler'
 
 import './assets/sass/ioi.scss'
 
@@ -19,7 +18,6 @@ Vue.config.productionTip = false
 Vue.use(VueSplit)
 
 Vue.prototype.$editor = {instance: null}
-Vue.prototype.$howler = Howl
 
 /* eslint-disable no-new */
 new Vue({
