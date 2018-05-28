@@ -27,19 +27,14 @@ export default {
 
     this.engine = new D3NE.Engine('demo@0.1.0', this.nodeBuilder.componentList())
 
-    this.$editor.instance.eventListener.on('change', async () => {
-      console.log('processing')
+    this.$editor.instance.eventListener.on('change', async (_, persistent) => {
+      EventBus.$emit('VisualEditorChange', self.$editor.instance.toJSON())
+
       await self.engine.abort();
       await self.engine.process(self.$editor.instance.toJSON());
+
     });
 
-    this.$editor.instance.eventListener.on('change', (_, persistent) => {
-      // trigger after each of the first six events
-      // console.log(EventBus)
-      // console.log(self.editor.toJSON())
-      this.engine.process(self.$editor.instance.toJSON());
-      EventBus.$emit('VisualEditorChange', self.$editor.instance.toJSON())
-    })
 
     this.$editor.instance.view.zoomAt(this.$editor.instance.nodes)
     this.$editor.instance.eventListener.trigger("change")

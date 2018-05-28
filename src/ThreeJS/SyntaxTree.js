@@ -40,7 +40,7 @@ class SyntaxTree {
 
         // get node type so that we can process it
         let type = nodes[node].title
-        console.log(type)
+
         switch(type){
           case 'onPlay':
             this.onPlays.push(nodes[node])
@@ -143,9 +143,16 @@ class SyntaxTree {
   executeCommand (node) {
 
     if (node){
-      let type = node.title
 
+      let type = node.title
+      console.log(type)
       switch(type){
+        case 'Add One':
+          this.exAddOne(node)
+          break;
+        case 'Random':
+          this.exRandom(node)
+          break;
         case 'LED Toggle':
           // console.log(node.data.LEDNum)
           this.arduino.toggleLED(node.data.LEDNum)
@@ -153,10 +160,6 @@ class SyntaxTree {
         case 'LED Write':
           console.log(node.data.LEDState)
           this.arduino.ledWrite(node.data.LEDNum, node.data.LEDState)
-          break;
-        case 'Add One':
-          console.log(node)
-          this.exAddOne(node)
           break;
         default:
           break
@@ -208,6 +211,35 @@ class SyntaxTree {
       // Trigger on change event
       this.vue.$editor.instance.eventListener.trigger("change")
     }
+  }
+
+  /**
+   * exAddOne - executes the add one functionality
+   *
+   * @param  {type} node object for addOne
+   */
+  exRandom (node) {
+    if (node.inputs[1].connections[0]){
+      // get the id of the number node - connected through the second input
+      let numberNode = node.inputs[1].connections[0].node
+      console.log(node)
+      // update the data and UI
+      let newValue = this.getRandomInt(Number(node.data.min), Number(node.data.max))
+
+      //let originalValue = this.vue.$editor.instance.nodes.find(n => n.id === numberNode).controls[1].getData().num
+      this.vue.$editor.instance.nodes.find(n => n.id === numberNode).controls[1].setValue(newValue)
+
+      // Trigger on change event
+      this.vue.$editor.instance.eventListener.trigger("change")
+    }
+  }
+
+  /**
+ * Returns a random integer between min (inclusive) and max (inclusive)
+ * Using Math.round() will give you a non-uniform distribution!
+ */
+  getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }
 

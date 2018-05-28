@@ -71,7 +71,7 @@ class Arduino {
   ledWrite (ledNumber, stateBool) {
 
     //debugger
-
+    console.log(ledNumber + '   ' + stateBool)
     if (ledNumber < this._LEDStates.length) {
       // convert true of false to one or zero repectively
       let stateValue = (stateBool === 'true' ? '1' : '0')

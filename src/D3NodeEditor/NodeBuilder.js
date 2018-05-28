@@ -15,6 +15,7 @@ import LEDWrite from './Components/LED/LEDWrite.js'
 
 // Modifier
 import AddOne from './Components/Modifier/AddOne.js'
+import Random from './Components/Modifier/Random.js'
 
 // DataTypes
 import Number from './Components/DataTypes/Number.js'
@@ -29,6 +30,7 @@ class NodeBuilder {
     this.LEDWrite = LEDWrite()
 
     this.AddOne = AddOne()
+    this.Random = Random()
 
     this.number = Number()
 
@@ -58,6 +60,7 @@ class NodeBuilder {
       this.LEDWrite,
 
       this.AddOne,
+      this.Random,
 
       this.number
     ]
@@ -74,7 +77,8 @@ class NodeBuilder {
         ['LED Write']: this.LEDWrite,
       },
       Modifier: {
-        ['Add One']: this.AddOne
+        ['Add One']: this.AddOne,
+        ['Random']: this.Random,
       },
       Variables: {
         ['Number']: this.number
