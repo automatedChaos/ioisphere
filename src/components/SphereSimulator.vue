@@ -26,11 +26,17 @@ export default {
   mounted: function () {
     simulation = new Simulation(window, document)
 
+    var sound = new this.$howler({
+      src: [require('@/assets/audio/061.mp3')]
+    })
+    sound.play();
+
     // Listen for the i-got-clicked event and its payload.
     EventBus.$on('VisualEditorChange', payload => {
       // process tree
       simulation.syntaxTree.processSyntaxTree(payload.nodes)
       //console.log(payload.nodes)
+      //
     })
   },
   methods: {

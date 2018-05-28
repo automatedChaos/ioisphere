@@ -22,6 +22,9 @@ import Random from './Components/Modifier/Random.js'
 // DataTypes
 import Number from './Components/DataTypes/Number.js'
 
+// Sound
+import Sound from './Components/Sound/Sound.js'
+
 class NodeBuilder {
   constructor () {
 
@@ -38,6 +41,8 @@ class NodeBuilder {
 
     this.number = Number()
 
+    this.Sound = Sound()
+
   }
 
   componentList () {
@@ -53,7 +58,9 @@ class NodeBuilder {
       this.SubtractOne,
       this.Random,
 
-      this.number
+      this.number,
+
+      this.Sound
     ]
   }
 
@@ -75,6 +82,9 @@ class NodeBuilder {
       },
       Variables: {
         ['Number']: this.number
+      },
+      Sound: {
+        ['Sound']: this.Sound
       }
     });
   }
