@@ -18,8 +18,6 @@ function tick(){
 
       let outSocket = new D3NE.Output('Start', anySocket)
 
-      let varSocket = new D3NE.Output("Vars", anySocket)
-
       let nameTemplate = '<input type="text" placeholder="Unique name">'
       let nameControl = new D3NE.Control(nameTemplate, (element, control) => {
         control.putData('name', '')
@@ -42,7 +40,6 @@ function tick(){
       .addControl(nameControl)
       .addControl(numControl)
       .addOutput(outSocket)
-      .addOutput(varSocket)
 
     },
     worker(node, inputs, outputs) {

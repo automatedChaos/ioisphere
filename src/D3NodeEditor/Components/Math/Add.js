@@ -18,7 +18,6 @@ function Add(){
       var processIn = new D3NE.Input("In", anySocket)
       var processOut = new D3NE.Output("Out", anySocket)
 
-
       let numTemplate = '<input type="number" placeholder="LED Number">'
       let numControl = new D3NE.Control(numTemplate, (element, control) => {
         control.putData('LEDNum', '0')
@@ -27,7 +26,6 @@ function Add(){
           control.putData('LEDNum', element.value) // put data in the node under the key "num"
         });
       });
-
 
       return node
       .addInput(processIn)

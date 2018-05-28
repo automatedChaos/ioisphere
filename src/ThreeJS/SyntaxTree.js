@@ -150,6 +150,9 @@ class SyntaxTree {
         case 'Add One':
           this.exAddOne(node)
           break;
+        case 'Subtract One':
+          this.exSubtractOne(node)
+          break;
         case 'Random':
           this.exRandom(node)
           break;
@@ -204,6 +207,30 @@ class SyntaxTree {
 
       // check we are in the range
       if (newValue > node.data.max) newValue = node.data.start
+
+      //let originalValue = this.vue.$editor.instance.nodes.find(n => n.id === numberNode).controls[1].getData().num
+      this.vue.$editor.instance.nodes.find(n => n.id === numberNode).controls[1].setValue(newValue)
+
+      // Trigger on change event
+      this.vue.$editor.instance.eventListener.trigger("change")
+    }
+  }
+
+  /**
+   * exSubtractOne - executes the add one functionality
+   *
+   * @param  {type} node object for addOne
+   */
+  exSubtractOne (node) {
+    if (node.inputs[1].connections[0]){
+      // get the id of the number node - connected through the second input
+      let numberNode = node.inputs[1].connections[0].node
+
+      // update the data and UI
+      let newValue = Number(this.vue.$editor.instance.nodes.find(n => n.id == numberNode).data.num) - 1
+
+      // check we are in the range
+      if (newValue < node.data.start) newValue = node.data.max
 
       //let originalValue = this.vue.$editor.instance.nodes.find(n => n.id === numberNode).controls[1].getData().num
       this.vue.$editor.instance.nodes.find(n => n.id === numberNode).controls[1].setValue(newValue)
