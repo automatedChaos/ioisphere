@@ -70,8 +70,6 @@ class Arduino {
    */
   ledWrite (ledNumber, stateBool) {
 
-    //debugger
-    console.log(ledNumber + '   ' + stateBool)
     if (ledNumber < this._LEDStates.length) {
       // convert true of false to one or zero repectively
       let stateValue = (stateBool === 'true' ? '1' : '0')
@@ -239,7 +237,9 @@ class Arduino {
    * @return {type}  description
    */
   clearSwitchStates () {
-    this._switchStates = this.clear(this.LEDTotal)
+    for (let i = 0, l = this._switchStates.length; i < l; i++){
+      this._switchStates[i] = '0'
+    }
   }
 
   /**

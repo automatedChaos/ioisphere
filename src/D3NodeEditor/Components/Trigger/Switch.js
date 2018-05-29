@@ -30,16 +30,27 @@ function Switch(){
 
       var numTemplate = '<input type="number" placeholder="Switch Number">'
       var numControl = new D3NE.Control(numTemplate, (element, control) => {
-        control.putData('interval', 0)
+        control.putData('num', 0)
         element.value = 0
         element.addEventListener('change',()=>{
-          control.putData('switch', element.value) // put data in the node under the key "num"
+          control.putData('num', element.value) // put data in the node under the key "num"
+        });
+      });
+
+      var activeTemplate = '<div class="checkbox-container">Active: <input class="checkbox" type="checkbox" disabled></div>'
+      var activeControl = new D3NE.Control(activeTemplate, (element, control) => {
+        element.value = true
+        element.addEventListener('change',()=>{
+
+          // update the checked box value
+          control.putData('active', element.childNodes[1].checked) // put data in the node under the key "num"
         });
       });
 
       return node
       .addControl(nameControl)
       .addControl(numControl)
+      .addControl(activeControl)
       .addOutput(outSocket)
 
     },

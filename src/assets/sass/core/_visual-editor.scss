@@ -51,3 +51,12 @@
   font-weight: bold;
   font-size: .8em;
 }
+.checkbox-container{
+  width:100%;
+  text-align: left;
+}
+.checkbox{
+  display: inline-block;
+  float:right;
+  width:30px !important;
+}

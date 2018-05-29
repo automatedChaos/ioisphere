@@ -17,6 +17,7 @@ function tick(){
     builder(node) {
 
       let outSocket = new D3NE.Output('Start', anySocket)
+      let activeSocket = new D3NE.Input('Active', anySocket)
 
       let nameTemplate = '<input type="text" placeholder="Unique name">'
       let nameControl = new D3NE.Control(nameTemplate, (element, control) => {
@@ -36,10 +37,22 @@ function tick(){
         });
       });
 
+      var activeTemplate = '<div class="checkbox-container">Active: <input class="checkbox" type="checkbox" checked></div>'
+      var activeControl = new D3NE.Control(activeTemplate, (element, control) => {
+        element.value = true
+        element.addEventListener('change',()=>{
+
+          // update the checked box value
+          control.putData('active', element.childNodes[1].checked) // put data in the node under the key "num"
+        });
+      });
+
       return node
       .addControl(nameControl)
       .addControl(numControl)
+      .addControl(activeControl)
       .addOutput(outSocket)
+      .addInput(activeSocket)
 
     },
     worker(node, inputs, outputs) {

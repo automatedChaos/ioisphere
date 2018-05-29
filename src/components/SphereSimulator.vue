@@ -37,14 +37,16 @@ export default {
   methods: {
 
     loop: function (timestamp) {
-      simulation.syntaxTree.update(timestamp)
 
-      for (let i = 0; i < 100; i++){
-        if (simulation.arduino.checkSwitch(i)) console.log('switch ' + i + ' is active')
+      // throttle the flow
+      if (window.performance.now() - this.updatePrev > this.updateDelay){
+        console.log('TICK')
+        simulation.syntaxTree.update(timestamp)
+        simulation.arduino.updateLEDs() // always the second to last call on loop
+        simulation.arduino.clearSwitchStates() // always the last call on the loop
+        this.updatePrev = window.performance.now()
       }
 
-      simulation.arduino.updateLEDs() // always the second to last call on loop
-      simulation.arduino.clearSwitchStates() // always the last call on the loop
       if (this.isPlaying) window.requestAnimationFrame(this.loop) // chec whether to carry on
     },
 
@@ -55,6 +57,8 @@ export default {
       console.log('PLAY')
       simulation.syntaxTree.setup()
       this.isPlaying = true
+
+      this.prevUpdate = window.window.performance.now()
       window.requestAnimationFrame(this.loop)
     },
 
@@ -66,7 +70,10 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      isPlaying: false
+      isPlaying: false,
+      updatePrev: null,
+      updateDelay: 3000
+
     }
   }
 }

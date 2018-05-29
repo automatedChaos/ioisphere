@@ -16,7 +16,7 @@ class SyntaxTree {
     this.nodes = null
     this.ticks = []
     this.onPlays = []
-    this.switchControls = null
+    this.switches = []
 
     this.vue = new Vue() // used for gaining access to the editor - update UI
   }
@@ -51,6 +51,10 @@ class SyntaxTree {
             nodes[node].prevTick = performance.now()
             this.ticks.push(nodes[node])
             break;
+          case 'Switch':
+            // these should be checked every time
+            this.switches.push(nodes[node])
+            break;
           default:
             // console.log('Node Unrecognised')
             break;
@@ -79,6 +83,41 @@ class SyntaxTree {
    * @param  {Number} now timestamp
    */
   update (now) {
+
+    // CHECK SWITCHES FIRST
+    this.checkSwitches()
+
+    // process everything else!
+    this.checkTicks(now)
+  }
+
+  /**
+   * checkSwitches - loop through and check for any active switches
+   * process the node flow
+   *
+   */
+  checkSwitches(){
+    // loop through all the ticks and set previous tick to now
+    for (let i = 0, l = this.switches.length; i < l; i+= 1){
+
+      // check if switch is active
+      if (this.arduino.checkSwitch (this.switches[i].data.num)) {
+
+        debugger
+
+        console.log('Triggered switch ' + this.switches[i].data.num)
+        // action
+        console.log(this.vue.$editor.instance.nodes.find(n => n.id === this.switches[i].id)) // .controls[0].setValue(newValue)
+      }
+    }
+  }
+
+  /**
+   * checkTicks - process all of the ticks - fire their node flow if their time is up!
+   *
+   * @param  {type} now time from requestAnimationFrame
+   */
+  checkTicks(now){
     // loop through all the ticks and set previous tick to now
     for (let i = 0, l = this.ticks.length; i < l; i+= 1){
 
@@ -109,6 +148,9 @@ class SyntaxTree {
 
     //stop process if there is nothing to do
     if (!connections) return false
+
+    // check UI checkbox
+    if (this.ticks[index].data.active === false) return false
 
     // get the first connection on this chain
     let node = this.nodes[connections[0].node]
@@ -266,7 +308,7 @@ class SyntaxTree {
   }
 
   exSound(node){
-    
+
     let file = this.pad(node.data.sound, 3)
     var sound = new Howl({
       src: [require(`@/assets/audio/${file}.mp3`)]
