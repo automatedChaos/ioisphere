@@ -72,7 +72,8 @@ class Simulation {
     this.rings = [33,  33,  30,  27,  23, 19, 14, 9,  4]
 
     this.init()
-    this.animate()
+    //this.animate()
+    this.render()
   }
 
 
@@ -231,10 +232,10 @@ class Simulation {
    */
   animate() {
 
-  	requestAnimationFrame( this.animate.bind(this) )
-  	this.arduino._meshGroup.rotation.z += 0.001
-    this.checkDims();
-  	this.render()
+  	//requestAnimationFrame( this.animate.bind(this) )
+  	//this.arduino._meshGroup.rotation.z += 0.001
+    //this.checkDims();
+  	//this.render()
 
   }
 
@@ -244,7 +245,9 @@ class Simulation {
    *
    */
   render() {
-    //console.log(this.renderer)
+    this.arduino._meshGroup.rotation.z += 0.001
+    this.checkDims();
+    
     if (this.renderer != null){
       this.renderer.render( this.scene, this.camera )
     }

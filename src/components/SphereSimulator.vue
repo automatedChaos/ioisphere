@@ -25,6 +25,7 @@ export default {
   name: 'SphereSimulator',
   mounted: function () {
     simulation = new Simulation(window, document)
+    window.requestAnimationFrame(this.loop)
 
     // Listen for the i-got-clicked event and its payload.
     EventBus.$on('VisualEditorChange', payload => {
@@ -38,16 +39,20 @@ export default {
 
     loop: function (timestamp) {
 
+      simulation.render()
+
       // throttle the flow
-      if (window.performance.now() - this.updatePrev > this.updateDelay){
-        console.log('TICK')
-        simulation.syntaxTree.update(timestamp)
-        simulation.arduino.updateLEDs() // always the second to last call on loop
-        simulation.arduino.clearSwitchStates() // always the last call on the loop
-        this.updatePrev = window.performance.now()
+      if (this.isPlaying){
+
+        if (timestamp - this.updatePrev > this.updateDelay){
+          simulation.syntaxTree.update(timestamp)
+          simulation.arduino.updateLEDs() // always the second to last call on loop
+          simulation.arduino.clearSwitchStates()
+          this.updatePrev = timestamp
+        }
       }
 
-      if (this.isPlaying) window.requestAnimationFrame(this.loop) // chec whether to carry on
+      window.requestAnimationFrame(this.loop) // chec whether to carry on
     },
 
     playSimulation: function () {
@@ -57,9 +62,8 @@ export default {
       console.log('PLAY')
       simulation.syntaxTree.setup()
       this.isPlaying = true
-
       this.prevUpdate = window.window.performance.now()
-      window.requestAnimationFrame(this.loop)
+
     },
 
     stopSimulation: function () {
@@ -72,8 +76,7 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       isPlaying: false,
       updatePrev: null,
-      updateDelay: 3000
-
+      updateDelay: 100
     }
   }
 }

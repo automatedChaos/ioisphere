@@ -50,7 +50,7 @@ class Arduino {
 
     this._LEDStates = this.clear(this.LEDTotal)
     this._switchStates = this.clear(this.LEDTotal)
-
+    
     // TEST: turn last one on
     //  this.ledWriteScript(192, true)
 

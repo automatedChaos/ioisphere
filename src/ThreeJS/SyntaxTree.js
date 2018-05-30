@@ -31,6 +31,8 @@ class SyntaxTree {
 
     // reset everything
     this.ticks = []
+    this.onPlays = []
+    this.switches = []
 
     // save a copy of the original syntax tree
     this.nodes = nodes
@@ -103,11 +105,10 @@ class SyntaxTree {
       // check if switch is active
       if (this.arduino.checkSwitch (this.switches[i].data.num)) {
 
-        debugger
-
         console.log('Triggered switch ' + this.switches[i].data.num)
         // action
         console.log(this.vue.$editor.instance.nodes.find(n => n.id === this.switches[i].id)) // .controls[0].setValue(newValue)
+
       }
     }
   }
