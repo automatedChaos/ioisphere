@@ -39,7 +39,7 @@ export default {
 
     loop: function (timestamp) {
 
-      simulation.render()
+      simulation.render(this.isPlaying)
 
       // throttle the flow
       if (this.isPlaying){

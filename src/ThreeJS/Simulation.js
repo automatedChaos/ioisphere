@@ -244,10 +244,10 @@ class Simulation {
    * render - manage the render
    *
    */
-  render() {
-    this.arduino._meshGroup.rotation.z += 0.001
+  render(isPlaying) {
+    if (isPlaying) this.arduino._meshGroup.rotation.z += 0.001
     this.checkDims();
-    
+
     if (this.renderer != null){
       this.renderer.render( this.scene, this.camera )
     }
