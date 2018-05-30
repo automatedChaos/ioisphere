@@ -60,6 +60,7 @@ export default {
       //let originalValue = this.$editor.instance.nodes.find(n => n.id === 1).controls[0].getData().LEDNum
       //this.$editor.instance.nodes.find(n => n.id === 1).controls[0].setValue(newValue)
       console.log('PLAY')
+      EventBus.$emit('play')
       simulation.syntaxTree.setup()
       this.isPlaying = true
       this.prevUpdate = window.window.performance.now()
@@ -68,6 +69,8 @@ export default {
 
     stopSimulation: function () {
       console.log('STOP')
+      EventBus.$emit('stop')
+
       // reset the sphere
       simulation.arduino.clear()
       simulation.arduino.updateLEDs()

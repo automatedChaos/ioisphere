@@ -9,6 +9,7 @@
   <div class="visual-editor">
     <h1>Visual Code Editor</h1>
     <div id="nodeEditor" class="node-editor"></div>
+    <div class="overlay"> </div>
   </div>
 </template>
 
@@ -37,8 +38,17 @@ export default {
 
 
     this.$editor.instance.view.zoomAt(this.$editor.instance.nodes)
-    this.$editor.instance.eventListener.trigger("change")
+    this.$editor.instance.eventListener.trigger('change')
     this.$editor.instance.view.resize()
+
+    // control buttons
+    EventBus.$on('play', payload => {
+      document.getElementsByClassName('overlay')[0].style.display = 'block';
+    })
+
+    EventBus.$on('stop', payload => {
+      document.getElementsByClassName('overlay')[0].style.display = 'none';
+    })
 
   },
   data () {
