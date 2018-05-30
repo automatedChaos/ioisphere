@@ -18,13 +18,18 @@
 
 <script>
 import Simulation from '../ThreeJS/Simulation.js'
+import Export from '../ThreeJS/Export.js'
 import EventBus from '@/components/utils/EventBus.js'
+
 let simulation = null;
+let e = null
 
 export default {
   name: 'SphereSimulator',
   mounted: function () {
     simulation = new Simulation(window, document)
+    e = new Export()
+
     window.requestAnimationFrame(this.loop)
 
     // Listen for the i-got-clicked event and its payload.
