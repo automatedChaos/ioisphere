@@ -107,8 +107,9 @@ class SyntaxTree {
 
         console.log('Triggered switch ' + this.switches[i].data.num)
         // action
-        console.log(this.vue.$editor.instance.nodes.find(n => n.id === this.switches[i].id)) // .controls[0].setValue(newValue)
-
+        //console.log(this.vue.$editor.instance.nodes.find(n => n.id === this.switches[i].id)) // .controls[0].setValue(newValue)
+        // process node
+        this.processNode(this.switches[i])
       }
     }
   }

@@ -48,9 +48,9 @@ class Arduino {
 
     this.addToggleSwitches(this.switchNumbers)
 
-    this._LEDStates = this.clear(this.LEDTotal)
-    this._switchStates = this.clear(this.LEDTotal)
-    
+    this._LEDStates = this.blankArray(this.LEDTotal)
+    this._switchStates = this.blankArray(this.LEDTotal)
+
     // TEST: turn last one on
     //  this.ledWriteScript(192, true)
 
@@ -242,12 +242,18 @@ class Arduino {
     }
   }
 
+  clear(){
+    for (let i = 0, l = this._LEDStates.length; i < l; i++){
+      this._LEDStates[i] = '0'
+    }
+  }
+
   /**
-   * clear - returns an array of 0s to represent the default of state
+   * blankArray - returns an array of 0s to represent the default of state
    *
    * @return {Array}  zeros
    */
-  clear (numLEDs) {
+  blankArray(numLEDs) {
     var zeros = []
     for (let i = 0; i < numLEDs; i++ ){
       zeros.push('0')

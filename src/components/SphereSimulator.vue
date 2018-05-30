@@ -68,6 +68,13 @@ export default {
 
     stopSimulation: function () {
       console.log('STOP')
+      // reset the sphere
+      simulation.arduino.clear()
+      simulation.arduino.updateLEDs()
+
+      // hide the overlay from the editor
+
+      // mark as not playing
       this.isPlaying = false
     }
   },
