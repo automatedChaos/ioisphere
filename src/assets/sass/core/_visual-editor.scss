@@ -38,14 +38,6 @@
 .node-editor .node .socket{
   border: 1px solid #333;
 }
-
-.node-editor .toggleled{
-  background: $ioi-blue;
-}
-.node-editor .selected{
-  background: $ioi-yellow;
-  border-color: $ioi-light-gray;
-}
 .control label{
   font-weight: bold;
   font-size: .8em;
@@ -67,4 +59,72 @@
   height:100%;
   background: rgba( $ioi-dark-gray, .7 );
   display:none;
+}
+.node-editor{
+  & .led-write, .led-toggle{
+    background:$ioi-red;
+    border-width: 0;
+    &:hover{
+      background: lighten( $ioi-red, 10% );
+    }
+    &.selected{
+      background: $ioi-red;
+    }
+  }
+
+  & .number{
+    background:$ioi-purple;
+    border-width: 0;
+    &:hover{
+      background: lighten( $ioi-purple, 10% );
+    }
+    &.selected{
+      background: $ioi-purple;
+    }
+  }
+
+  & .onplay, .tick, .switch {
+    background:$ioi-green;
+    border-width: 0;
+    &:hover{
+      background: lighten( $ioi-green, 10% );
+    }
+    &.selected{
+      background: $ioi-green;
+    }
+  }
+
+  & .add-one, .subtract-one, .random {
+    background:$ioi-blue;
+    border-width: 0;
+    &:hover{
+      background: lighten( $ioi-blue, 10% );
+    }
+    &.selected{
+      background: $ioi-blue;
+    }
+  }
+
+  & .sound {
+    background:$ioi-yellow;
+    border-width: 0;
+    &:hover{
+      background: lighten( $ioi-yellow, 10% );
+    }
+    &.selected{
+      background: $ioi-yellow;
+    }
+  }
+}
+
+.context-menu .item{
+  background-color: $ioi-dark-gray;
+}
+.context-menu .item:first-child{
+  background-color: $ioi-dark-gray;
+}
+
+.context-menu .search input {
+  background-color: $ioi-dark-gray;
+  border-top: 1px solid $ioi-dark-gray;
 }
