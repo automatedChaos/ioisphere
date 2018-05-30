@@ -72,7 +72,7 @@ class Export {
    * @return {string}        setup function
    */
   setup (insert) {
-    return `void setup(setup) {
+    return `void setup() {
       Bridge.begin();  // Initialize the Bridge
       SerialUSB.begin(9600);  // Initialize the Serial
 
