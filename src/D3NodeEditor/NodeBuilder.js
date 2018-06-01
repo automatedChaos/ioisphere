@@ -18,9 +18,11 @@ import LEDWrite from './Components/LED/LEDWrite.js'
 import AddOne from './Components/Modifier/AddOne.js'
 import SubtractOne from './Components/Modifier/SubtractOne.js'
 import Random from './Components/Modifier/Random.js'
+import ToggleBoolean from './Components/Modifier/ToggleBoolean.js'
 
 // DataTypes
 import Number from './Components/DataTypes/Number.js'
+import Boolean from './Components/DataTypes/Boolean.js'
 
 // Sound
 import Sound from './Components/Sound/Sound.js'
@@ -38,8 +40,10 @@ class NodeBuilder {
     this.AddOne = AddOne()
     this.SubtractOne = SubtractOne()
     this.Random = Random()
+    this.ToggleBoolean = ToggleBoolean()
 
     this.number = Number()
+    this.Boolean = Boolean()
 
     this.Sound = Sound()
 
@@ -57,8 +61,10 @@ class NodeBuilder {
       this.AddOne,
       this.SubtractOne,
       this.Random,
+      this.ToggleBoolean,
 
       this.number,
+      this.Boolean,
 
       this.Sound
     ]
@@ -79,9 +85,11 @@ class NodeBuilder {
         ['Add One']: this.AddOne,
         ['Subtract One']: this.SubtractOne,
         ['Random']: this.Random,
+        ['Toggle Boolean']: this.ToggleBoolean,
       },
       Variables: {
-        ['Number']: this.number
+        ['Number']: this.number,
+        ['Boolean']: this.Boolean
       },
       Sound: {
         ['Sound']: this.Sound

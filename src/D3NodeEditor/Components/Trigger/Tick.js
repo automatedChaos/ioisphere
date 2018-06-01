@@ -5,7 +5,8 @@
  * @Last modified time: 2018-05-03T00:02:41+01:00
  */
  import anySocket from '../Socket/Any.js'
-
+ import Vue from 'vue'
+ let vue = new Vue()
 /**
 * toggleLED
 *
@@ -17,7 +18,7 @@ function tick(){
     builder(node) {
 
       let outSocket = new D3NE.Output('Start', anySocket)
-      let activeSocket = new D3NE.Input('Active', anySocket)
+      let activeSocket = new D3NE.Input('Read Boolean', anySocket)
 
       let nameTemplate = '<input type="text" placeholder="Unique name">'
       let nameControl = new D3NE.Control(nameTemplate, (element, control) => {
@@ -37,15 +38,25 @@ function tick(){
         });
       });
 
-      var activeTemplate = '<div class="checkbox-container">Active: <input class="checkbox" type="checkbox" checked></div>'
-      var activeControl = new D3NE.Control(activeTemplate, (element, control) => {
-        element.value = true
-        element.addEventListener('change',()=>{
+      let activeTemplate = `<select>
+        <option value="true">ACTIVE</option>
+        <option value="false">IDLE</option>
+      </select>`
 
-          // update the checked box value
-          control.putData('active', element.childNodes[1].checked) // put data in the node under the key "num"
+      let activeControl = new D3NE.Control(activeTemplate, (element, control) => {
+        control.putData('active', 'true')
+        control.setValue = val => {
+
+          console.log('setter ' + val)
+          element.value = val
+          control.putData('active', val)
+        }
+        element.value = 'true'
+        element.addEventListener('change',()=>{
+          control.putData('active', element.value) // put data in the node under the key "num"
         });
       });
+
 
       return node
       .addControl(nameControl)
@@ -57,6 +68,11 @@ function tick(){
     },
     worker(node, inputs, outputs) {
 
+      if (inputs[0][0]){
+        console.log('worker ' + inputs[0][0])
+        node.data.active = inputs[0][0]
+        vue.$editor.instance.nodes.find(n => n.id == node.id).controls[2].setValue(inputs[0][0])
+      }
     }
   });
 }

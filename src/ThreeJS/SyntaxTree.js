@@ -70,7 +70,7 @@ class SyntaxTree {
     this.exporter.setNodes(this.nodes)
     this.exporter.setTicks(this.ticks)
     this.exporter.run()
-    
+
   }
 
   /**
@@ -198,28 +198,30 @@ class SyntaxTree {
     if (node){
 
       let type = node.title
-      console.log(type)
+
       switch(type){
         case 'Add One':
           this.exAddOne(node)
-          break;
+          break
         case 'Subtract One':
           this.exSubtractOne(node)
-          break;
+          break
+        case 'Toggle Boolean':
+          this.exToggleBoolean(node)
+          break
         case 'Random':
           this.exRandom(node)
-          break;
+          break
         case 'LED Toggle':
           //console.log(this.vue.$editor.instance.nodes.find(n => n.id === node.id).getStatement())
           this.arduino.toggleLED(node.data.LEDNum)
           break
         case 'LED Write':
-          console.log(node.data.getStatement('asdfasdf'))
           this.arduino.ledWrite(node.data.LEDNum, node.data.LEDState)
           break;
         case 'Sound':
           this.exSound(node)
-          break;
+          break
         default:
           break
       }
@@ -290,6 +292,24 @@ class SyntaxTree {
 
       //let originalValue = this.vue.$editor.instance.nodes.find(n => n.id === numberNode).controls[1].getData().num
       this.vue.$editor.instance.nodes.find(n => n.id === numberNode).controls[1].setValue(newValue)
+
+      // Trigger on change event
+      this.vue.$editor.instance.eventListener.trigger("change")
+    }
+  }
+
+  /**
+   * exToggleBoolean - executes the add one functionality
+   *
+   * @param  {type} node object for addOne
+   */
+  exToggleBoolean (node) {
+    if (node.inputs[1].connections[0]){
+      // get the id of the number node - connected through the second input
+      let numberNode = node.inputs[1].connections[0].node
+
+      // toggle the value
+      this.vue.$editor.instance.nodes.find(n => n.id === numberNode).controls[1].toggleValue()
 
       // Trigger on change event
       this.vue.$editor.instance.eventListener.trigger("change")

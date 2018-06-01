@@ -30,14 +30,13 @@
       <p>
         That is the 'Hello, World!' program finished. Press the play button in the Sphere Simulator on the right to test the program. You may have to drag the sphere around to see the flashing LED.
       </p>
+      <h2>Challenge:</h2>
       <p>
-        <h2>Challenge:</h2>
         Now that you can make one LED flash. We think you can probably make as many of them as you like flash. Why don't you try and make 4 LEDs next to each other flash? Use the picture below as a guide. Here you can see we have changed how quick each one flashes as well!
-
       </p>
       <img src="../../assets/tutorial-two-challenge.png" />  <br />
       <router-link class="next-tutorial" to="/tutorial2">Time to play! <br />Click here to go to the second tutorial. </router-link>
-      </p>
+
 
     </div>
   </div>

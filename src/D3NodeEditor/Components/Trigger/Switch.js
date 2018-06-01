@@ -16,7 +16,8 @@ function Switch(){
   return new D3NE.Component('Switch', {
     builder(node) {
 
-      let outSocket = new D3NE.Output('Switch', anySocket)
+      let outSocket = new D3NE.Output('Out', anySocket)
+      let boolSocket = new D3NE.Output('Write', anySocket)
 
 
       let nameTemplate = '<input type="text" placeholder="Unique name">'
@@ -52,6 +53,7 @@ function Switch(){
       .addControl(numControl)
       .addControl(activeControl)
       .addOutput(outSocket)
+      .addOutput(boolSocket)
 
     },
     worker(node, inputs, outputs) {

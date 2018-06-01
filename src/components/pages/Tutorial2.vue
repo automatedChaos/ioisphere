@@ -3,16 +3,26 @@
     <div class="tutorial-body">
       <h2>Helter Skelter</h2>
       <p>
-      The toppings you may chose for that TV dinner pizza slice when you forgot to shop for foods, the paint you may slap on your face to impress the new boss is your business. But what about your daily bread? Design comps, layouts, wireframes—will your clients accept that you go about things the facile way? Authorities in our business will tell in no uncertain terms that Lorem Ipsum is that huge, huge no no to forswear forever. Not so fast, I'd say, there are some redeeming factors in favor of greeking text, as its use is merely the symptom of a worse problem to take into consideration.
+        Unsurprisingly, the iOiSphere looks a lot like a sphere! But, inside the sphere there is a giant ribbon of cables and LEDs spiraling up to the top of the sphere. Kind of like a helter skelter. We think the iOiSphere would make a great helter skelter and so we are going to program it to behave like one.
       </p>
       <p>
-      You begin with a text, you sculpt information, you chisel away what's not needed, you come to the point, make things clear, add value, you're a content person, you like words. Design is no afterthought, far from it, but it comes in a deserved second. Anyway, you still use Lorem Ipsum and rightly so, as it will always have a place in the web workers toolbox, as things happen, not always the way you like it, not always in the preferred order. Even if your less into design and more into content strategy you may find some redeeming value with, wait for it, dummy copy, no less.
+        First, as the helter skelter will happen over time lets add a Tick Node. You now how to do this already let's not repeat outselves! Then, add a LED Toggle Node and join the two nodes together. So far, your should look like the picture below. Hint: The interval has been changed to 100!
+      </p>
+      <img src="../../assets/tutorial-three-tick-toggle.png" />
+      <p>
+        We now need to add Node to keep track of the position of the LED as helter skelters around the iOiSphere. We do this using a Number Node. In the Node Menu, hover over the variables option and select number. Make a join between the Number Node's read/write connector and the LED Toggle Node's read connector. Your program should look like the image below. Now, when you change the value of the number the LED Toggle number should change with it. Test it by changing the Number Node's value a few times. Hint: The nodes have been given more descriptive names so that the program is easier to understand.
+      </p>
+      <img src="../../assets/tutorial-three-number.png" />
+      <p>
+        We are almost there. Now all we need to do is modify the number everytime the Tick Node is triggered and this will make the LEDs toggle around the iOiSphere in a helter skelter type behaviour. To do this, we need to add a Subtract One Node. In the Node Menu, hover over the Modifier option and select the Subtract One node. Now we need to connect the out connector of the LED Toggle node to the in connector of the Subtract One node. This allows the program to flow from one node to another. Then we need to connect the read/write connector of the Number node to the write connector of the Subtract One node. Yours should look like the image below.
+      </p>
+      <img src="../../assets/tutorial-three-subtract.png" />
+      <p>
+        Congratulations! You now have an iOiSphere that thinks it is a helter skelter. Press the play button and watch what happens.
       </p>
       <p>
-      Consider this: You made all the required mock ups for commissioned layout, got all the approvals, built a tested code base or had them built, you decided on a content management system, got a license for it or adapted open source software for your client's needs. Then the question arises: where's the content? Not there yet? That's not so bad, there's dummy copy to the rescue. But worse, what if the fish doesn't fit in the can, the foot's to big for the boot? Or to small? To short sentences, to many headings, images too large for the proposed design, or too small, or they fit in but it looks iffy for reasons the folks in the meeting can't quite tell right now, but they're unhappy, somehow. A client that's unhappy for a reason is a problem, a client that's unhappy though he or her can't quite put a finger on it is worse.
-      </p>
-      <p>
-        But. A big but: Lorem Ipsum is not t the root of the problem, it just shows what's going wrong. Chances are there wasn't collaboration, communication, and checkpoints, there wasn't a process agreed upon or specified with the granularity required. It's content strategy gone awry right from the start. Forswearing the use of Lorem Ipsum wouldn't have helped, won't help now. It's like saying you're a bad designer, use less bold text, don't use italics in every other paragraph. True enough, but that's not all that it takes to get things back on track.
+        <router-link class="next-tutorial" to="/tutorial3">Time to play! <br />Click here to go to the third tutorial. </router-link>
+
       </p>
     </div>
   </div>

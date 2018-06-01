@@ -15,10 +15,10 @@
         <router-link to="/tutorial3">3. Starry Night</router-link>
       </li>
       <li>
-        <router-link to="/tutorial4">4. Chase Me</router-link>
+        <router-link to="/tutorial4">4. Catch Me</router-link>
       </li>
       <li>
-        <router-link to="/tutorial5">5. Owl H00t</router-link>
+        <router-link to="/tutorial5">5. Noise Machine</router-link>
       </li>
     </ul>
 
