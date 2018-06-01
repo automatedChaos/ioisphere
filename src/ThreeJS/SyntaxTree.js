@@ -202,11 +202,11 @@ class SyntaxTree {
           this.exRandom(node)
           break;
         case 'LED Toggle':
-          // console.log(node.data.LEDNum)
+          //console.log(this.vue.$editor.instance.nodes.find(n => n.id === node.id).getStatement())
           this.arduino.toggleLED(node.data.LEDNum)
           break
         case 'LED Write':
-          console.log(node.data.LEDState)
+          console.log(node.data.getStatement('asdfasdf'))
           this.arduino.ledWrite(node.data.LEDNum, node.data.LEDState)
           break;
         case 'Sound':
@@ -309,6 +309,12 @@ class SyntaxTree {
     }
   }
 
+  /**
+   * exSound - execute the sound - using howler
+   *
+   * @param  {Object} node in question
+   */
+
   exSound(node){
 
     let file = this.pad(node.data.sound, 3)
@@ -316,6 +322,15 @@ class SyntaxTree {
       src: [require(`@/assets/audio/${file}.mp3`)]
     })
     sound.play();
+  }
+
+  /**
+   * getTicks - returns the ticks - basic getter
+   *
+   * @return {Array}  list of ticks
+   */
+  getTicks () {
+    return this.ticks
   }
 
   /**

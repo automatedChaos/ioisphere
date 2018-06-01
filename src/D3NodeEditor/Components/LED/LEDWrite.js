@@ -49,6 +49,23 @@ function LEDWrite(){
         });
       });
 
+      /// return the arduino code relevant to the node
+      node.data.getStatement = function (varName) {
+
+        // find out what the state shoulde be
+        let state = (this.LEDState === 'true' ? 'LEDHIGH' : 'LEDLOW')
+
+        // get the number of LED
+        let LEDNum = '' + node.data.LEDNum
+
+        // Overwrite with var name if specified
+        if (varName) LEDNum = varName
+
+        // create and return statement
+        let statement = `anemone.ledWrite(${LEDNum}, ${state});`
+        return statement
+      }
+
       return node
       .addInput(processIn)
       .addInput(numberIn)

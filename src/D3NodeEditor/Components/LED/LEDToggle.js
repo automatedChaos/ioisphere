@@ -35,6 +35,20 @@ function LEDToggle(){
         });
       });
 
+      // add the arduino codestatement to the node
+      node.data.getStatement = function(){
+        let statement = ''
+
+        statement+= `bool testState = anemone.ledRead(${this.LEDNum}); \n`
+        statement+= `if (testState == true){
+          anemone.ledWrite(${this.LEDNum}, LEDLOW);
+        }else{
+          anemone.ledWrite(${this.LEDNum}, LEDHIGH);
+        }`
+
+        return statement
+      }
+
       return node
       .addInput(processIn)
       .addInput(numberIn)

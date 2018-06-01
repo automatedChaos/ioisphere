@@ -9,6 +9,7 @@
     <h1>Simulator</h1>
     <a v-on:click="playSimulation" class="button play"></a>
     <a v-on:click="stopSimulation" class="button stop"></a>
+    <a v-on:click="exportSimulation" class="button export"><img src="../assets/arrow.svg"/></a>
     <div id="renderer"></div>
     <div id="logo">
       <img class="logo" src="../assets/ioi.jpg">
@@ -84,7 +85,14 @@ export default {
 
       // mark as not playing
       this.isPlaying = false
+    },
+
+    exportSimulation: function () {
+        console.log('BOOP')
+        e.processTicks(simulation.syntaxTree.getTicks())
+        console.log(e.build())
     }
+
   },
   data () {
     return {
