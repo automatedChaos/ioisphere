@@ -160,7 +160,7 @@ class SyntaxTree {
     if (!connections) return false
 
     // check UI checkbox
-    if (this.ticks[index].data.active === false) return false
+    if (this.ticks[index].data.active === 'false') return false
 
     // get the first connection on this chain
     let node = this.nodes[connections[0].node]
