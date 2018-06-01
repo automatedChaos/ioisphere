@@ -26,3 +26,8 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+/*
+window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
+    alert("Error occured: " + errorMsg);//or any message
+    return false;
+}*/

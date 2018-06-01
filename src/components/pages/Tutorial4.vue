@@ -4,16 +4,25 @@
     <div class="tutorial-body">
       <h2>Catch Me</h2>
       <p>
+        So far the iOiSphere has not been very interactive which is weird as it is covered in swtiches. Let's create an interactive game of catch that you can play with your friends. The rules are simple. An LED runs fast around the bottom ring of the iOiSphere. One switch is chosen as the catcher and when toggled, the LED will stop running. The aim is to catch the LED as close as you can to the catcher switch. Who ever gets the closest to catching the LED wins a prize (we don't actually have a prize but hopefully the great feeling of learning to program the iOiSphere is prize enough.)
       </p>
       <p>
-      You begin with a text, you sculpt information, you chisel away what's not needed, you come to the point, make things clear, add value, you're a content person, you like words. Design is no afterthought, far from it, but it comes in a deserved second. Anyway, you still use Lorem Ipsum and rightly so, as it will always have a place in the web workers toolbox, as things happen, not always the way you like it, not always in the preferred order. Even if your less into design and more into content strategy you may find some redeeming value with, wait for it, dummy copy, no less.
+        To begin, we create a marker that shows where the catcher is on the bottom ring. We do this straight after the tick using a LEDWrite node. Create a program that looks like the picture below.
       </p>
+      <img src="../../assets/tutorial-five-led.png" />
       <p>
-      Consider this: You made all the required mock ups for commissioned layout, got all the approvals, built a tested code base or had them built, you decided on a content management system, got a license for it or adapted open source software for your client's needs. Then the question arises: where's the content? Not there yet? That's not so bad, there's dummy copy to the rescue. But worse, what if the fish doesn't fit in the can, the foot's to big for the boot? Or to small? To short sentences, to many headings, images too large for the proposed design, or too small, or they fit in but it looks iffy for reasons the folks in the meeting can't quite tell right now, but they're unhappy, somehow. A client that's unhappy for a reason is a problem, a client that's unhappy though he or her can't quite put a finger on it is worse.
+        Now let's add the runing LED. This is quite fiddly but the end result is great. First, we need to add an LEDWrite node, an Add One node and a Number Node. Connect them up like the image below and then press play. You should see the whole bottom row of LEDs light up one by one.
       </p>
+      <img src="../../assets/tutorial-five-ring.png" />
       <p>
-        But. A big but: Lorem Ipsum is not t the root of the problem, it just shows what's going wrong. Chances are there wasn't collaboration, communication, and checkpoints, there wasn't a process agreed upon or specified with the granularity required. It's content strategy gone awry right from the start. Forswearing the use of Lorem Ipsum wouldn't have helped, won't help now. It's like saying you're a bad designer, use less bold text, don't use italics in every other paragraph. True enough, but that's not all that it takes to get things back on track.
+        This is cool but we want a running LED, not just a ring of lit LEDs. We do this by turning the previous LED off every tick. Using the same compoents as the previous step, create another LEDWrite run that turns the LEDs off. This is where the program starts to look complicated but it is just a repeat of the previous step. Your program should look like the image below.
       </p>
+      <img src="../../assets/tutorial-five-run.png" />
+      <p>
+        Now all we need is a way to catch the sneaky LED. We do this by adding a Switch Node from the Trigger option in the Node Menu. Then we attach a ToggleBoolean node to the Switch node. Then we need a Boolean node to toggle. A boolean is a computer term for a value that can only be true or false. Often in electronics this is represented by a switch being turned off or on. Here we are going to use the boolean to stop and start the Tick. Connect the Boolean to the write of the Boolean Toggle node and to the read of the Tick. Check your program against the image below.
+      </p>
+      <img src="../../assets/tutorial-five-switch.png" /><br />
+      <router-link class="next-tutorial" to="/tutorial5">Time to play! <br />Click here to go to the fifth and final tutorial. </router-link>
     </div>
   </div>
 </template>
