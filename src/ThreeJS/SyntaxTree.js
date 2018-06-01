@@ -9,6 +9,7 @@
 */
 import Vue from 'vue'
 import {Howl, Howler} from 'howler';
+import Export from '../ThreeJS/Export.js'
 
 class SyntaxTree {
   constructor(a){
@@ -19,6 +20,8 @@ class SyntaxTree {
     this.switches = []
 
     this.vue = new Vue() // used for gaining access to the editor - update UI
+    this.exporter = new Export()
+
   }
 
   /**
@@ -63,6 +66,11 @@ class SyntaxTree {
         }
       }
     }
+
+    this.exporter.setNodes(this.nodes)
+    this.exporter.setTicks(this.ticks)
+    this.exporter.run()
+    
   }
 
   /**

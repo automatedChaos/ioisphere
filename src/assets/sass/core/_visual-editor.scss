@@ -116,15 +116,24 @@
     }
   }
 }
-
+/*
 .context-menu .item{
-  background-color: $ioi-dark-gray;
+  background-color: $ioi-pink;
+  &:hover{
+    background: darker($ioi-pink, 30%)
+  }
 }
 .context-menu .item:first-child{
-  background-color: $ioi-dark-gray;
+  background-color: $ioi-pink;
+  &:hover{
+    background: darker($ioi-pink, 30%)
+  }
 }
 
 .context-menu .search input {
-  background-color: $ioi-dark-gray;
-  border-top: 1px solid $ioi-dark-gray;
+  background-color: $ioi-pink;
+  border-top: 1px solid $ioi-pink;
 }
+*/
+
+/* search item   subitems */

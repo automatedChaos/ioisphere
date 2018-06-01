@@ -29,8 +29,7 @@ export default {
   name: 'SphereSimulator',
   mounted: function () {
     simulation = new Simulation(window, document)
-    e = new Export()
-
+    
     window.requestAnimationFrame(this.loop)
 
     // Listen for the i-got-clicked event and its payload.
@@ -88,9 +87,7 @@ export default {
     },
 
     exportSimulation: function () {
-        console.log('BOOP')
-        e.processTicks(simulation.syntaxTree.getTicks())
-        console.log(e.build())
+
     }
 
   },

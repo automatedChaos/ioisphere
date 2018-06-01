@@ -1,6 +1,5 @@
 <template>
   <div class="tutorial-content-container">
-    <img src="../../assets/helter.svg" />
     <div class="tutorial-body">
       <h2>Helter Skelter</h2>
       <p>

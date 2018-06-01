@@ -17,7 +17,7 @@ function Random(){
 
       var processIn = new D3NE.Input('In', anySocket)
       var processOut = new D3NE.Output('Out', anySocket)
-      var numberIn = new D3NE.Input('Number', anySocket)
+      var numberIn = new D3NE.Input('Write', anySocket)
 
       let maxTemplate = '<div><label>MAX</label><input type="number"></div>'
       let maxControl = new D3NE.Control(maxTemplate, (element, control) => {

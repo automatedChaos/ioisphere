@@ -16,6 +16,11 @@ class Export {
 
   constructor(){
 
+    this.nodes = null
+    this.ticks = []
+    this.onPlays = []
+    this.switches = []
+
     this.varsArray = [] // easier to check if exists like this
     this.varsInsert = ''
     this.setupInsert = ''
@@ -25,20 +30,68 @@ class Export {
 
   }
 
+  run () {
+    this.processTicks()
+  }
+
   /**
    * processNode - description
    *
    * @param  {type} id description
    * @return {type}    description
    */
-  processNode (id) {
+  processNodeChain (node) {
 
-    // get the node
-    let node = this.vue.$editor.instance.nodes.find(n => n.id === id)
+    // get the out connections
+    let connections = node.outputs[0].connections
 
-    // create blank statement to fill
-    let statement = node.data.getStatement();
+    //stop process if there is nothing to do
+    if (!connections[0]) return false
 
+    // get the first connection on this chain
+    let nodeID = this.nodes[connections[0].node]
+
+    // get the first connection on this chain
+    node = this.nodes[connections[0].node]
+
+
+    let finished = false
+    let inserts = ''
+    let count = 0
+
+    while (!finished){
+      count++
+
+      console.log('process' + count)
+      if (count > 10) finished = true
+      // action this node
+
+      // check if we have another node connected
+      if (!node.outputs[0].connections[0]) {
+        finished = true
+        return false
+      }
+
+      // get nextNode ID
+      let nextNodeID = node.outputs[0].connections[0].node
+      if (!nextNodeID) {
+        finished = true
+        return false
+      }
+
+      // get the next node
+      node = this.nodes[nextNodeID]
+
+    }
+
+
+    // loop through all of the others
+
+
+
+    return inserts
+
+    /*
     switch (node.title){
       case 'Add One':
         // check it has connection, create a ++ statement
@@ -67,9 +120,7 @@ class Export {
         break;
       default:
         break
-    }
-
-    return statement
+    }*/
   }
 
   /**
@@ -77,19 +128,20 @@ class Export {
    *
    * @return {String}
    */
-  processTicks (ticks) {
-    for (let i = 0, l = ticks.length; i < l; i+= 1){
+  processTicks () {
+    for (let i = 0, l = this.ticks.length; i < l; i+= 1){
       // create a unique idea
       let uID = this.guid()
 
       // create the variables
-      let delayVar = `const int delay${uID} = ${ticks[i].data.interval}; \n`
+      let delayVar = `const int delay${uID} = ${this.ticks[i].data.interval}; \n`
       let prevTick = `unsigned long prevTick${uID} = millis(); \n`
 
       // add the vars
       this.vars+= delayVar
       this.vars+= prevTick
 
+      let tickInsert = this.processNodeChain(this.ticks[i])
       let tickIf = this.tick(uID, 'Serial.println("booop"); \n')
 
       this.loopInsert+= tickIf
@@ -224,6 +276,24 @@ class Export {
         .substring(1);
     }
     return s4() + s4();
+  }
+
+
+
+  setNodes (n) {
+    this.nodes = n
+  }
+
+  setTicks (t) {
+    this.ticks = t
+  }
+
+  setOnPlays (p){
+    this.onPlays = p
+  }
+
+  setSwitches (s) {
+    this.switches = s
   }
 }
 

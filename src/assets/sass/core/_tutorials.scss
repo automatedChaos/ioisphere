@@ -54,6 +54,7 @@
     right:0px;
     top:0px;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 .tutorial-content::-webkit-scrollbar-track {
 	background-color: $ioi-light-gray;
@@ -68,20 +69,44 @@
   border-radius: 0px;
 }
 .tutorial-content-container{
-  color:black;
-  width:100%;
-  img{
-    margin:2%;
-    width:16%;
-    float:left;
-  }
+  float:right;
+  width: 100%;
+  padding:1%;
   .tutorial-body{
-    width:76%;
-    margin:2% 4% 2% 0%;
+    width:100%;
     float:right;
     min-height:400px;
+  }
+  & img{
+    margin:auto;
+    max-width: 60%;
+    margin:20px;
+    clear:both;
+  }
+  & p{
+    clear:both;
+    max-width:95%;
+    margin:auto;
+    padding:10px;
   }
 }
 .router-link-exact-active{
   background: $ioi-green;
+}
+
+a.next-tutorial{
+  font-size: 1.5em;
+  font-family: 'Indie Flower', cursive;
+  font-weight: $font-weight-normal;
+  padding-bottom: 50px;
+  color: $ioi-purple;
+  &:hover{
+    color: $ioi-blue;
+  }
+}
+ul.info-list{
+  padding:30px 0 30px 0;
+  max-width: 500px;
+  margin:auto;
+  text-align: left;
 }

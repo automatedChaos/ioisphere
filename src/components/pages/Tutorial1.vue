@@ -1,20 +1,44 @@
 <template>
   <div class="tutorial-content-container">
-    
+
     <div class="tutorial-body">
       <h2>Hello, World!</h2>
       <p>
-      The toppings you may chose for that TV dinner pizza slice when you forgot to shop for foods, the paint you may slap on your face to impress the new boss is your business. But what about your daily bread? Design comps, layouts, wireframes—will your clients accept that you go about things the facile way? Authorities in our business will tell in no uncertain terms that Lorem Ipsum is that huge, huge no no to forswear forever. Not so fast, I'd say, there are some redeeming factors in favor of greeking text, as its use is merely the symptom of a worse problem to take into consideration.
+        It is a great tradition that when someone learns a new programming language the first thing they write is a, 'Hello, World!' program (<a href="https://en.wikipedia.org/wiki/%22Hello,_World!%22_program" target="_blank">more info</a>). Usually, this very short program consist of getting the computer to output the words 'Hello, World!' to the screen somewhere. The iOiSphere does not have a screen but it does have hundreds of LEDs. Instead of words all we have is flashing LEDs so that is what our 'Hello, world!' program will do.
       </p>
       <p>
-      You begin with a text, you sculpt information, you chisel away what's not needed, you come to the point, make things clear, add value, you're a content person, you like words. Design is no afterthought, far from it, but it comes in a deserved second. Anyway, you still use Lorem Ipsum and rightly so, as it will always have a place in the web workers toolbox, as things happen, not always the way you like it, not always in the preferred order. Even if your less into design and more into content strategy you may find some redeeming value with, wait for it, dummy copy, no less.
+        When you begin writing a program for the iOiSphere, you will first need to consider the trigger that will begin the program. There are several triggers to choose from:
+        <ul class="info-list">
+          <li> On Play - Happens once everytime you press play </li>
+          <li> Tick - Repeats over and over again </li>
+          <li> Switch - Only happens when a chosen switch has been used </li>
+        </ul>
       </p>
       <p>
-      Consider this: You made all the required mock ups for commissioned layout, got all the approvals, built a tested code base or had them built, you decided on a content management system, got a license for it or adapted open source software for your client's needs. Then the question arises: where's the content? Not there yet? That's not so bad, there's dummy copy to the rescue. But worse, what if the fish doesn't fit in the can, the foot's to big for the boot? Or to small? To short sentences, to many headings, images too large for the proposed design, or too small, or they fit in but it looks iffy for reasons the folks in the meeting can't quite tell right now, but they're unhappy, somehow. A client that's unhappy for a reason is a problem, a client that's unhappy though he or her can't quite put a finger on it is worse.
+        If we want an LED to flash then we need it to happen more than once when we press play so an 'On Play' trigger is not right. We don't want to wait for a human to toggle the switch either so a 'Switch' trigger won't work. This leaves us with the 'Tick' trigger so let's add one of those. Click on the squeared grid in the visual editor above to bring up the Node Menu. Hover over triggers and select 'Tick.' Now give it a unique name like in the picture below.
+      </p>
+      <img src="../../assets/tutorial-two-tick.png" />
+      <p>
+        Great. Now we want to select an LED to flash. Bring up the Node Menu once more. This time, hover over the LED option and select 'LED Toggle'. Just as in the Welcome tutorial, link the Tick node to the LED Toggle Node just like the picture below.
+      </p>
+      <img src="../../assets/tutorial-two-toggle.png" />
+      <p>
+        Before we test the program, lets make some changes to the Node properties. First, lets set the tick interval to 500 in the Tick Node. This means that the LED will Flash at double the speed. Then lets change the LED number in the LED Toggle Node to 100. This changes which LED is going to flash. The final program should look like the picture below.
+      </p>
+      <img src="../../assets/tutorial-two-properties.png" />
+      <p>
+      <p>
+        That is the 'Hello, World!' program finished. Press the play button in the Sphere Simulator on the right to test the program. You may have to drag the sphere around to see the flashing LED.
       </p>
       <p>
-        But. A big but: Lorem Ipsum is not t the root of the problem, it just shows what's going wrong. Chances are there wasn't collaboration, communication, and checkpoints, there wasn't a process agreed upon or specified with the granularity required. It's content strategy gone awry right from the start. Forswearing the use of Lorem Ipsum wouldn't have helped, won't help now. It's like saying you're a bad designer, use less bold text, don't use italics in every other paragraph. True enough, but that's not all that it takes to get things back on track.
+        <h2>Challenge:</h2>
+        Now that you can make one LED flash. We think you can probably make as many of them as you like flash. Why don't you try and make 4 LEDs next to each other flash? Use the picture below as a guide. Here you can see we have changed how quick each one flashes as well!
+
       </p>
+      <img src="../../assets/tutorial-two-challenge.png" />  <br />
+      <router-link class="next-tutorial" to="/tutorial2">Time to play! <br />Click here to go to the second tutorial. </router-link>
+      </p>
+
     </div>
   </div>
 </template>

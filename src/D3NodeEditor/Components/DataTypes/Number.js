@@ -15,7 +15,7 @@ function Number(){
   return new D3NE.Component("Number", {
     builder(node) {
 
-      var processOut = new D3NE.Output("Out", anySocket)
+      var processOut = new D3NE.Output("Read/Write", anySocket)
 
       let nameTemplate = '<input type="text" placeholder="Unique name">'
       let nameControl = new D3NE.Control(nameTemplate, (element, control) => {
