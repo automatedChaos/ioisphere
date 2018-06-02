@@ -90,10 +90,16 @@ class Export {
             tickInserts+= this.processLEDToggle(this.nodes[nextNode].id, ledNum )
             break;
           case 'LED Write':
-            tickInserts+= this.processLEDWrite(this.nodes[nextNode].data.LEDNum, this.nodes[nextNode].data.LEDState)
+            tickInserts+= this.processLEDWrite(this.nodes[nextNode].id)
             break;
           case 'Sound':
             tickInserts+= this.processSound(this.nodes[nextNode].data.sound);
+            break;
+          case 'Subtract One':
+            if (this.nodes[nextNode].inputs[1].connections[0]) tickInserts = this.processSubtractOne(nextNode)
+            break;
+          case 'Add One':
+            if (this.nodes[nextNode].inputs[1].connections[0]) tickInserts = this.processAddOne(nextNode)
             break;
         }
 
@@ -108,8 +114,28 @@ class Export {
 
   }
 
-  processSubtratOne(){
+  processSubtractOne(id){
+    let varID = this.nodes[id].inputs[1].connections[0].node
+    // process the number
+    this.processVar(varID);
 
+    let title = this.nodes[varID].title
+
+    return `
+      ${title}${varID}--;
+      if (${title}${varID} < 0) ${title}${varID} = ${this.nodes[id].data.max};`
+  }
+
+  processAddOne(id){
+    let varID = this.nodes[id].inputs[1].connections[0].node
+    // process the number
+    this.processVar(varID);
+
+    let title = this.nodes[varID].title
+
+    return `
+      ${title}${varID}++;
+      if (${title}${varID} > ${this.nodes[id].data.max}) ${title}${varID} = ${this.nodes[id].data.start};`
   }
 
   processSound (num) {
@@ -117,9 +143,23 @@ class Export {
 
   }
 
-  processLEDWrite (LED, state) {
-    let stateVal = (state === 'true' ? 'LEDHIGH' : 'LEDLOW')
-    return `anemone.ledWrite(${LED}, ${stateVal});\n`
+  processLEDWrite (id) {
+
+    let ledNum = this.nodes[id].data.LEDNum + ''
+
+    // overwrite ledNum with var
+    if (this.nodes[id].inputs[1].connections[0]) {
+      // get the node id
+      let varNode = this.nodes[id].inputs[1].connections[0].node
+      // create the name
+      ledNum = this.nodes[varNode].title + varNode
+      // get if added to the vars
+      this.processVar(varNode)
+    }
+
+    let stateVal = (this.nodes[id].data.LEDState === 'true' ? 'LEDHIGH' : 'LEDLOW')
+    return `anemone.ledWrite(${ledNum}, ${stateVal});\n`
+
   }
 
   processLEDToggle (id, LED) {
@@ -269,11 +309,12 @@ class Export {
   processVar(id){
     // work with the next node
     let type = this.nodes[id].title
+    let name = type.replace(/\s/g, '');
 
     let newVar = ''
     switch(type){
       case 'Number':
-        newVar = `int ${type}${id} = ${this.nodes[id].data.num};`
+        newVar = `int ${name}${id} = ${this.nodes[id].data.num};`
         break
       default:
         break
