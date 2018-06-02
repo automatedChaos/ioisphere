@@ -96,10 +96,13 @@ class Export {
             tickInserts+= this.processSound(this.nodes[nextNode].data.sound);
             break;
           case 'Subtract One':
-            if (this.nodes[nextNode].inputs[1].connections[0]) tickInserts = this.processSubtractOne(nextNode)
+            if (this.nodes[nextNode].inputs[1].connections[0]) tickInserts+= this.processSubtractOne(nextNode)
             break;
           case 'Add One':
-            if (this.nodes[nextNode].inputs[1].connections[0]) tickInserts = this.processAddOne(nextNode)
+            if (this.nodes[nextNode].inputs[1].connections[0]) tickInserts+= this.processAddOne(nextNode)
+            break;
+          case 'Random':
+            if (this.nodes[nextNode].inputs[1].connections[0]) tickInserts+= this.processRandom(nextNode)
             break;
         }
 
@@ -112,6 +115,16 @@ class Export {
 
     this.loopInsert+= this.tick(i, tickInserts)
 
+  }
+  processRandom(id){
+    let varID = this.nodes[id].inputs[1].connections[0].node
+    // process the number
+    this.processVar(varID);
+
+    let title = this.nodes[varID].title
+
+    return `
+      ${title}${varID} = random(${this.nodes[id].data.min}, ${this.nodes[id].data.max});`
   }
 
   processSubtractOne(id){
