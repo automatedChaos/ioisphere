@@ -77,7 +77,17 @@ class Export {
 
         switch(type){
           case 'LED Toggle':
-            tickInserts+= this.processLEDToggle(this.nodes[nextNode].id, this.nodes[nextNode].data.LEDNum)
+            let ledNum = this.nodes[nextNode].data.LEDNum + ''
+            // overwrite ledNum with var
+            if (this.nodes[nextNode].inputs[1].connections[0]) {
+              // get the node id
+              let varNode = this.nodes[nextNode].inputs[1].connections[0].node
+              // create the name
+              ledNum = this.nodes[varNode].title + varNode
+              // get if added to the vars
+              this.processVar(varNode)
+            }
+            tickInserts+= this.processLEDToggle(this.nodes[nextNode].id, ledNum )
             break;
           case 'LED Write':
             tickInserts+= this.processLEDWrite(this.nodes[nextNode].data.LEDNum, this.nodes[nextNode].data.LEDState)
@@ -95,6 +105,10 @@ class Export {
     }
 
     this.loopInsert+= this.tick(i, tickInserts)
+
+  }
+
+  processSubtratOne(){
 
   }
 
@@ -142,6 +156,8 @@ class Export {
 
       ${this.variables(this.varsInsert)}
 
+      ${this.variablesArray()}
+
       ${this.setup(this.setupInsert)}
 
       ${this.update(this.loopInsert)}
@@ -177,9 +193,18 @@ class Export {
    * @return {string}        the final variable list for the skecth
    */
   variables (insert) {
+
     return `
       ${insert}
     `
+  }
+
+  variablesArray (){
+    let varString = ''
+    for (let i = 0, l = this.varsArray.length; i < l; i+= 1){
+      varString+= this.varsArray[i] + '\n'
+    }
+    return varString
   }
 
   /**
@@ -241,6 +266,29 @@ class Export {
       Anemone anemone(8);`
   }
 
+  processVar(id){
+    // work with the next node
+    let type = this.nodes[id].title
+
+    let newVar = ''
+    switch(type){
+      case 'Number':
+        newVar = `int ${type}${id} = ${this.nodes[id].data.num};`
+        break
+      default:
+        break
+    }
+
+    if (!this.varExists(newVar)) this.varsArray.push(newVar)
+  }
+
+  varExists (str) {
+    if (this.varsArray.indexOf(str) > -1){
+      return true
+    }else{
+      return false
+    }
+  }
 }
 
 export default Export
