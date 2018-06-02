@@ -57,6 +57,7 @@ function tick(){
         });
       });
 
+      node.data.interval = 1000
 
       return node
       .addControl(nameControl)

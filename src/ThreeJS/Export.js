@@ -11,141 +11,101 @@
  * https://jsfiddle.net/UselessCode/qm5AG/
 */
 import Vue from 'vue'
+let vue = new Vue()
 
 class Export {
 
   constructor(){
 
     this.nodes = null
-    this.ticks = []
-    this.onPlays = []
-    this.switches = []
 
+    this.varsArray = [] // easier to check if exists like this
+    this.varsInsert = ''
+    this.setupInsert= ''
+    this.loopInsert = ''
+
+  }
+
+  run (nodes){
     this.varsArray = [] // easier to check if exists like this
     this.varsInsert = ''
     this.setupInsert = ''
     this.loopInsert = ''
+    this.nodes = nodes
 
-    this.vue = new Vue() // used for gaining access to the editor - update UI
+    // loop through each node
+    for (let node in nodes) {
+      if (nodes.hasOwnProperty(node)) {
+        // get node type so that we can process it
+        let type = nodes[node].title
 
+        switch(type){
+          case 'Tick':
+            this.processTick(node)
+            break;
+          default:
+            // console.log('Node Unrecognised')
+            break;
+        }
+      }
+    }
+
+    console.log(this.build())
   }
 
-  run () {
-    this.processTicks()
-  }
+  processTick (i) {
+    // add the vars
+    this.varsInsert += `const int delay${this.nodes[i].id} = ${this.nodes[i].data.interval}; \nunsigned long prevTick${this.nodes[i].id} = millis(); \n`
 
-  /**
-   * processNode - description
-   *
-   * @param  {type} id description
-   * @return {type}    description
-   */
-  processNodeChain (node) {
-
-    // get the out connections
-    let connections = node.outputs[0].connections
-
-    //stop process if there is nothing to do
-    if (!connections[0]) return false
-
-    // get the first connection on this chain
-    let nodeID = this.nodes[connections[0].node]
-
-    // get the first connection on this chain
-    node = this.nodes[connections[0].node]
-
+    let tickInserts = ''
 
     let finished = false
-    let inserts = ''
     let count = 0
+    let nextNode = i
+    while(!finished){
 
-    while (!finished){
-      count++
-
-      console.log('process' + count)
-      if (count > 10) finished = true
-      // action this node
-
-      // check if we have another node connected
-      if (!node.outputs[0].connections[0]) {
+      let n = this.nodes[nextNode].outputs[0].connections[0]
+      if (n === undefined ){
+        console.log(n)
         finished = true
-        return false
+      }else{
+        //process the commands in here
+        nextNode = this.nodes[nextNode].outputs[0].connections[0].node
+
+        // work with the next node
+        let type = this.nodes[nextNode].title
+
+        switch(type){
+          case 'LED Toggle':
+            tickInserts+= this.processLEDToggle(this.nodes[nextNode].id, this.nodes[nextNode].data.LEDNum)
+            break;
+          case 'LED Write':
+            tickInserts+= this.processLEDWrite(this.nodes[nextNode].data.LEDNum, this.nodes[nextNode].data.LEDState)
+            break;
+        }
+
       }
 
-      // get nextNode ID
-      let nextNodeID = node.outputs[0].connections[0].node
-      if (!nextNodeID) {
-        finished = true
-        return false
-      }
-
-      // get the next node
-      node = this.nodes[nextNodeID]
-
+      // safety net
+      count++;
+      if (count > 3) finished = true
     }
 
+    this.loopInsert+= this.tick(i, tickInserts)
 
-    // loop through all of the others
-
-
-
-    return inserts
-
-    /*
-    switch (node.title){
-      case 'Add One':
-        // check it has connection, create a ++ statement
-        break;
-      case 'Subtract One':
-        // check it has connection, create a -- statement
-        break;
-      case 'Random':
-        // check it has connection, create random number
-        break;
-      case 'LED Toggle':
-        statement+= `bool testState = anemone.ledRead(${node.data.LEDNum});`
-        statement+= `if (testState == true){
-          anemone.ledWrite(${node.data.LEDNum}, ${LEDLOW});
-        }else{
-          anemone.ledWrite(${node.data.LEDNum}, ${LEDHIGH});
-        }`
-        break
-      case 'LED Write':
-        // read state set LED
-        let state = (node.data.LEDState === 'HIGH' ? 'LEDHIGH' : 'LEDLOW')
-        statement = `anemone.ledWrite(${node.data.LEDNum}, ${state});`
-        break;
-      case 'Sound':
-        statement = `sendI2C(${num});`
-        break;
-      default:
-        break
-    }*/
   }
 
-  /**
-   * processTicks - loop through an array of ticks and create the arduino code
-   *
-   * @return {String}
-   */
-  processTicks () {
-    for (let i = 0, l = this.ticks.length; i < l; i+= 1){
-      // create a unique idea
-      let uID = this.guid()
 
-      // create the variables
-      let delayVar = `const int delay${uID} = ${this.ticks[i].data.interval}; \n`
-      let prevTick = `unsigned long prevTick${uID} = millis(); \n`
+  processLEDWrite(LED, state){
+    let stateVal = (state === 'true' ? 'LEDHIGH' : 'LEDLOW')
+    return `anemone.ledWrite(${LED}, ${stateVal});\n`
+  }
 
-      // add the vars
-      this.vars+= delayVar
-      this.vars+= prevTick
-
-      let tickInsert = this.processNodeChain(this.ticks[i])
-      let tickIf = this.tick(uID, 'Serial.println("booop"); \n')
-
-      this.loopInsert+= tickIf
-    }
+  processLEDToggle(id, LED){
+    this.varsInsert+= `bool bool${id} = true;`
+    return `bool${id} = !bool${id}; \n
+            int newState = (bool${id} ? LEDHIGH : LEDLOW);\n
+            anemone.ledWrite(${LED}, newState);\n`
   }
 
   /**
@@ -160,6 +120,7 @@ class Export {
     \/\/ TICK BEAT ${id}
     if (now - prevTick${id} > delay${id}) {
         ${insert}
+        prevTick${id} = now;
     } \n`
   }
 
@@ -172,7 +133,7 @@ class Export {
     return `
       ${this.includes()}
 
-      ${this.vars}
+      ${this.variables(this.varsInsert)}
 
       ${this.setup(this.setupInsert)}
 
@@ -206,10 +167,8 @@ class Export {
    * @param  {string} insert new variables from the editor
    * @return {string}        the final variable list for the skecth
    */
-  vars (insert) {
+  variables (insert) {
     return `
-      Anemone anemone(8);
-
       ${insert}
     `
   }
@@ -262,39 +221,6 @@ class Export {
       Anemone anemone(8);`
   }
 
-
-  /**
-   * guid - craete a new ID
-   * https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
-   *
-   * @return {String}  unique id
-   */
-  guid() {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
-    }
-    return s4() + s4();
-  }
-
-
-
-  setNodes (n) {
-    this.nodes = n
-  }
-
-  setTicks (t) {
-    this.ticks = t
-  }
-
-  setOnPlays (p){
-    this.onPlays = p
-  }
-
-  setSwitches (s) {
-    this.switches = s
-  }
 }
 
 export default Export

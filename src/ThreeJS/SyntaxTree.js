@@ -67,10 +67,7 @@ class SyntaxTree {
       }
     }
 
-    this.exporter.setNodes(this.nodes)
-    this.exporter.setTicks(this.ticks)
-    this.exporter.run()
-
+    this.exporter.run(this.nodes)
   }
 
   /**
