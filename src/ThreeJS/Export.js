@@ -82,6 +82,9 @@ class Export {
           case 'LED Write':
             tickInserts+= this.processLEDWrite(this.nodes[nextNode].data.LEDNum, this.nodes[nextNode].data.LEDState)
             break;
+          case 'Sound':
+            tickInserts+= this.processSound(this.nodes[nextNode].data.sound);
+            break;
         }
 
       }
@@ -95,13 +98,17 @@ class Export {
 
   }
 
+  processSound (num) {
+    return `sendI2C(${num});`
 
-  processLEDWrite(LED, state){
+  }
+
+  processLEDWrite (LED, state) {
     let stateVal = (state === 'true' ? 'LEDHIGH' : 'LEDLOW')
     return `anemone.ledWrite(${LED}, ${stateVal});\n`
   }
 
-  processLEDToggle(id, LED){
+  processLEDToggle (id, LED) {
     this.varsInsert+= `bool bool${id} = true;`
     return `bool${id} = !bool${id}; \n
             int newState = (bool${id} ? LEDHIGH : LEDLOW);\n
@@ -138,6 +145,8 @@ class Export {
       ${this.setup(this.setupInsert)}
 
       ${this.update(this.loopInsert)}
+
+      ${this.i2c()}
     `
   }
 
@@ -203,6 +212,17 @@ class Export {
     }`
   }
 
+  i2c(){
+    return `
+    void sendI2C(int num) {
+      Wire.beginTransmission(4); // transmit to device #4
+
+      Wire.write(num);           // sends one byte
+
+      Wire.endTransmission();    // stop transmitting
+    }
+    `
+  }
 
   /**
    * includes - returns all of the includes for the Arduino sketch
