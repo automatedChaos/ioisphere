@@ -42,11 +42,14 @@ class Export {
         let type = nodes[node].title
 
         switch(type){
+          case 'onPlay':
+            this.processOnPlay(node)
+            break
           case 'Tick':
             this.processTick(node)
             break
-          case 'onPlay':
-            this.processOnPlay(node)
+          case 'Switch':
+            this.processSwitch(node)
             break
           default:
             // console.log('Node Unrecognised')
@@ -206,6 +209,75 @@ class Export {
   }
 
 
+
+    /**
+     * processSwitch - Add the tick and then loop through nodes and process
+     *
+     * @param  {Number} i index of the tick node in question
+     */
+    processSwitch (i) {
+
+      let switchInserts = ''
+      let switchNum = this.nodes[i].data.num
+      let finished = false
+      let count = 0
+      let nextNode = i
+      while(!finished){
+
+        let n = this.nodes[nextNode].outputs[0].connections[0]
+        if (n === undefined ){
+          console.log(n)
+          finished = true
+        }else{
+          //process the commands in here
+          nextNode = this.nodes[nextNode].outputs[0].connections[0].node
+
+          // work with the next node
+          let type = this.nodes[nextNode].title
+
+          switch(type){
+            case 'LED Toggle':
+              let ledNum = this.nodes[nextNode].data.LEDNum + ''
+              // overwrite ledNum with var
+              if (this.nodes[nextNode].inputs[1].connections[0]) {
+                // get the node id
+                let varNode = this.nodes[nextNode].inputs[1].connections[0].node
+                // create the name
+                ledNum = this.nodes[varNode].title + varNode
+                // get if added to the vars
+                this.processVar(varNode)
+              }
+              switchInserts+= this.processLEDToggle(this.nodes[nextNode].id, ledNum )
+              break;
+            case 'LED Write':
+              switchInserts+= this.processLEDWrite(this.nodes[nextNode].id)
+              break;
+            case 'Sound':
+              switchInserts+= this.processSound(this.nodes[nextNode].data.sound);
+              break;
+            case 'Subtract One':
+              if (this.nodes[nextNode].inputs[1].connections[0]) switchInserts+= this.processSubtractOne(nextNode)
+              break;
+            case 'Add One':
+              if (this.nodes[nextNode].inputs[1].connections[0]) switchInserts+= this.processAddOne(nextNode)
+              break;
+            case 'Random':
+              if (this.nodes[nextNode].inputs[1].connections[0]) switchInserts+= this.processRandom(nextNode)
+              break;
+          }
+        }
+
+        // safety net
+        count++
+        if (count > 1000) finished = true
+      }
+
+      this.loopInsert+= this.switch(i, switchNum, switchInserts)
+
+    }
+
+
+
   processRandom(id){
     let varID = this.nodes[id].inputs[1].connections[0].node
     // process the number
@@ -266,10 +338,27 @@ class Export {
   }
 
   processLEDToggle (id, LED) {
-    this.varsInsert+= `bool bool${id} = true;`
+    this.varsInsert+= `bool bool${id} = false;`
     return `bool${id} = !bool${id}; \n
             int newState = (bool${id} ? LEDHIGH : LEDLOW);\n
             anemone.ledWrite(${LED}, newState);\n`
+  }
+
+
+  /**
+   * switch -
+   *
+   * @param  {type} id     description
+   * @param  {type} switch description
+   * @param  {type} insert description
+   * @return {type}        description
+   */
+  switch (id, switchNum, insert) {
+    return `
+    \/\/ SWITCH TRIGGER ${id}
+    if (anemone.node(${switchNum}) == true){
+      ${insert}
+    }\n`
   }
 
   /**
