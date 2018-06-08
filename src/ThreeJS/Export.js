@@ -17,16 +17,18 @@ class Export {
 
   constructor(){
 
+    this.sourcecode = ''
     this.nodes = null
 
     this.varsArray = [] // easier to check if exists like this
     this.varsInsert = ''
     this.setupInsert= ''
     this.loopInsert = ''
-
   }
 
   run (nodes){
+    // HAVE A CLEAR OUT
+    this.sourcecode = ''
     this.varsArray = [] // easier to check if exists like this
     this.varsInsert = ''
     this.setupInsert = ''
@@ -42,17 +44,104 @@ class Export {
         switch(type){
           case 'Tick':
             this.processTick(node)
-            break;
+            break
+          case 'onPlay':
+            this.processOnPlay(node)
+            break
           default:
             // console.log('Node Unrecognised')
-            break;
+            break
         }
       }
     }
 
-    console.log(this.build())
+    // build the lot
+    this.sourcecode = this.build()
+
+    // create the data to download
+    var textFile = null
+    var data = new Blob([this.sourcecode], {type: 'text/plain'})
+
+    // clear the old one jsut in case - Possible memory leak
+    if (textFile !== null) {
+      window.URL.revokeObjectURL(textFile);
+    }
+
+    // update the link for download
+    textFile = window.URL.createObjectURL(data);
+    var link = document.getElementById('downloadlink');
+    link.href = textFile;
+    link.style.display = 'block';
+
   }
 
+  processOnPlay (i) {
+
+    let onPlayInserts = '' // string to build the statements
+    let finished = false   // to hang the while loop on
+
+    let count = 0 // count used as a safety net for hte
+    let nextNode = i
+    while(!finished){
+
+      let n = this.nodes[nextNode].outputs[0].connections[0]
+      if (n === undefined ){
+        finished = true // stop if there is no new node
+      }else{
+        //process the commands in here
+        nextNode = this.nodes[nextNode].outputs[0].connections[0].node
+
+        // work with the next node
+        let type = this.nodes[nextNode].title
+
+        // detect type of node and respond
+        switch(type){
+          case 'LED Toggle':
+            let ledNum = this.nodes[nextNode].data.LEDNum + ''
+            // overwrite ledNum with var
+            if (this.nodes[nextNode].inputs[1].connections[0]) {
+              // get the node id
+              let varNode = this.nodes[nextNode].inputs[1].connections[0].node
+              // create the name
+              ledNum = this.nodes[varNode].title + varNode
+              // get if added to the vars
+              this.processVar(varNode)
+            }
+            onPlayInserts+= this.processLEDToggle(this.nodes[nextNode].id, ledNum )
+            break;
+          case 'LED Write':
+            onPlayInserts+= this.processLEDWrite(this.nodes[nextNode].id)
+            break;
+          case 'Sound':
+            onPlayInserts+= this.processSound(this.nodes[nextNode].data.sound);
+            break;
+          case 'Subtract One':
+            if (this.nodes[nextNode].inputs[1].connections[0]) onPlayInserts+= this.processSubtractOne(nextNode)
+            break;
+          case 'Add One':
+            if (this.nodes[nextNode].inputs[1].connections[0]) onPlayInserts+= this.processAddOne(nextNode)
+            break;
+          case 'Random':
+            if (this.nodes[nextNode].inputs[1].connections[0]) onPlayInserts+= this.processRandom(nextNode)
+            break;
+        }
+      }
+
+      // safety net
+      count++
+      if (count > 1000) finished = true
+    }
+
+    this.setupInsert+= onPlayInserts
+
+  }
+
+
+  /**
+   * processTick - Add the tick and then loop through nodes and process
+   *
+   * @param  {Number} i index of the tick node in question
+   */
   processTick (i) {
     // add the vars
     this.varsInsert += `const int delay${this.nodes[i].id} = ${this.nodes[i].data.interval}; \nunsigned long prevTick${this.nodes[i].id} = millis(); \n`
@@ -105,17 +194,18 @@ class Export {
             if (this.nodes[nextNode].inputs[1].connections[0]) tickInserts+= this.processRandom(nextNode)
             break;
         }
-
       }
 
       // safety net
-      count++;
-      if (count > 3) finished = true
+      count++
+      if (count > 1000) finished = true
     }
 
     this.loopInsert+= this.tick(i, tickInserts)
 
   }
+
+
   processRandom(id){
     let varID = this.nodes[id].inputs[1].connections[0].node
     // process the number

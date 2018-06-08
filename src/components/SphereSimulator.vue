@@ -9,7 +9,7 @@
     <h1>Simulator</h1>
     <a v-on:click="playSimulation" class="button play"></a>
     <a v-on:click="stopSimulation" class="button stop"></a>
-    <a v-on:click="exportSimulation" class="button export"><img src="../assets/arrow.svg"/></a>
+    <a v-on:click="exportSimulation" download="program.ino" id="downloadlink" class="button export"><img src="../assets/arrow.svg"/></a>
     <div id="renderer"></div>
     <div id="logo">
       <img class="logo" src="../assets/ioi.jpg">
@@ -29,7 +29,7 @@ export default {
   name: 'SphereSimulator',
   mounted: function () {
     simulation = new Simulation(window, document)
-    
+
     window.requestAnimationFrame(this.loop)
 
     // Listen for the i-got-clicked event and its payload.
@@ -87,6 +87,7 @@ export default {
     },
 
     exportSimulation: function () {
+
 
     }
 
